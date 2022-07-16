@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [ComponentInject] private PlayerScript PlayerScript;
+    [ComponentInject] private PlayerScript playerScript;
+    [SerializeField] private AnimationCurve curve;
+    private Hex NewHexTile;
 
     private void Awake()
     {
@@ -13,76 +14,60 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void DoMove(Hex selectedHex)
-    {
-        startPosition = transform.position;
-        endPosition = selectedHex.transform.position;
+    {        
         NewHexTile = selectedHex;
-
-        rotatingIsActive = true;
-        lerpingIsActive = true;
+        StartCoroutine(RotateTowardsDestination(NewHexTile.transform.position, OnRotationFinished));
     }
 
-
-    private bool rotatingIsActive;
-    private bool lerpingIsActive;
-    private float elapsedTime;
-    private float desiredLerpDuration = 1;
-
-    private Vector3 startPosition;
-    private Vector3 endPosition;
-    private Hex NewHexTile;
-
-    [SerializeField] private AnimationCurve curve;
-
-    void Update()
+    private void OnRotationFinished()
     {
-        UpdateRotation();        
-        UpdateMovement();
+        StartCoroutine(MoveToDestination(NewHexTile.transform.position, 1, OnMovingFinished));
     }
 
-
-    private Quaternion previousRotation;
-    private void UpdateRotation()
+    private void OnMovingFinished()
     {
-        if(!rotatingIsActive)
-        {
-            return;
-        }
-        if (Quaternion.Angle(transform.rotation, previousRotation) < 0.02f)
-        {
-            rotatingIsActive = false;
-            return;
-        }
-
-        Vector3 targetDirection = endPosition - transform.position;
-        float singleStep = 4 * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
-        transform.rotation = Quaternion.LookRotation(newDirection);
-        
-        previousRotation = transform.rotation;
+        playerScript.CurrentHexTile = NewHexTile;
     }
 
-    private void UpdateMovement()
+    private IEnumerator MoveToDestination(Vector3 endPosition, float duration, Action callbackOnFinished)
     {
-        if(rotatingIsActive)
+        float elapsedTime = 0f;
+        var startPosition = transform.position;
+
+        while (elapsedTime < duration)
         {
-            return;
-        }
-        if (!lerpingIsActive)
-        {
-            return;
-        }
-        if (elapsedTime > desiredLerpDuration)
-        {
-            elapsedTime = 0;
-            lerpingIsActive = false;
-            PlayerScript.CurrentHexTile = NewHexTile;
-            return;
+            elapsedTime += Time.deltaTime;
+            float percComplete = elapsedTime / duration;
+            transform.position = Vector3.Lerp(startPosition, endPosition, curve.Evaluate(percComplete));
+            yield return null;
         }
 
-        elapsedTime += Time.deltaTime;
-        float percComplete = elapsedTime / desiredLerpDuration;
+        callbackOnFinished();
+    }
 
-        transform.position = Vector3.Lerp(startPosition, endPosition, curve.Evaluate(percComplete));
+    private float previousAngleDiff;
+
+    private IEnumerator RotateTowardsDestination(Vector3 endPosition, Action callbackOnFinished)
+    {
+        float elapsedTime = 0f;
+        var targetDirection = endPosition - transform.position;
+
+        while (elapsedTime < 3)
+        {
+            elapsedTime += Time.deltaTime;
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, 4 * Time.deltaTime, 0.0f);
+
+            var currentAngleDiff = Vector3.Angle(newDirection, targetDirection);
+            if (Math.Abs(currentAngleDiff - previousAngleDiff) < 0.01) { 
+                break; 
+            }
+
+            transform.rotation = Quaternion.LookRotation(newDirection);
+
+            previousAngleDiff = currentAngleDiff;
+            yield return null;
+        }
+
+        callbackOnFinished();
     }
 }

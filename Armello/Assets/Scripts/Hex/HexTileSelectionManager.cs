@@ -14,11 +14,10 @@ public class HexTileSelectionManager : MonoBehaviour
     {
         // highlighted betekent: Valid moves voor player om heen te gaan
 
-        GameObject hexTileGo;
-        if (FindTile(mousePosition, out hexTileGo))
+        List<Hex> selectedHexes;
+        if (FindTile(mousePosition, out selectedHexes))
         {
-            var selectedHexTile = hexTileGo.GetComponent<Hex>();
-            HandleClickedOnTile(selectedHexTile);
+            HandleClickedOnTile(selectedHexes);
         }
         else
         {
@@ -27,16 +26,16 @@ public class HexTileSelectionManager : MonoBehaviour
         }
     }
 
-    private void HandleClickedOnTile(Hex selectedHexTile)
+    private void HandleClickedOnTile(List<Hex> selectedHexTiles)
     {
         var currentPlayer = NetworkHelper.instance.GetMyPlayer();
         if(SelectedPlayer != null && currentPlayer == SelectedPlayer)
         {
-            TryPlayerMoveAction(selectedHexTile);
+            TryPlayerMoveAction(selectedHexTiles);
         }
-        else if(currentPlayer.CurrentHexTile == selectedHexTile)
+        else if(selectedHexTiles.Any(x => x == currentPlayer.CurrentHexTile))
         {
-            ShowMovesForPlayer(selectedHexTile, currentPlayer);
+            ShowMovesForPlayer(currentPlayer);
         }
         else
         {
@@ -45,17 +44,23 @@ public class HexTileSelectionManager : MonoBehaviour
         }
     }
 
-    private void ShowMovesForPlayer(Hex selectedHexTile, PlayerScript player)
+    private void ShowMovesForPlayer(PlayerScript player)
     {
         SelectedPlayer = player;
-        HightlightValidNeighbourTiles(selectedHexTile);
+        HightlightValidNeighbourTiles(player.CurrentHexTile);
     }
 
-    private void TryPlayerMoveAction(Hex selectedHexTile)
+    private void TryPlayerMoveAction(List<Hex> selectedHexTiles)
     {
-        if (validNeighboursHightlighted.Any(x => x == selectedHexTile.HexCoordinates))
+        var validNeighboursClicked = selectedHexTiles.Where(x => validNeighboursHightlighted.Any(y => y == x.HexCoordinates)).ToList();
+
+        if (validNeighboursClicked.Count == 1)
         {
-            SelectedPlayer.GetComponent<PlayerMovement>().DoMove(selectedHexTile);
+            SelectedPlayer.GetComponent<PlayerMovement>().DoMove(validNeighboursClicked[0]);
+        }
+        else if(validNeighboursClicked.Count > 1)
+        {
+            Debug.Log("MULTIPLE RESULTS; DO NOTHING");
         }
         else
         {
@@ -90,7 +95,7 @@ public class HexTileSelectionManager : MonoBehaviour
         }
     }
 
-    private bool FindTile(Vector3 mousePosition, out GameObject result)
+    private bool FindTile(Vector3 mousePosition, out List<Hex> result)
     {
         var layermask = 1 << LayerMask.NameToLayer(Statics.LAYER_MASK_HEXTILE);
 
@@ -98,17 +103,12 @@ public class HexTileSelectionManager : MonoBehaviour
         var hits = Physics.RaycastAll(ray, layermask);
         if (hits.Length > 0)
         {
-            if(hits.Length == 1)
-            {
-                result = hits[0].collider.gameObject;
-                return true;
-            }
-            else
-            {
-                // soms ook player object erbij
-                result = hits.First(x => x.collider.gameObject.GetComponent<Hex>() != null).collider.gameObject;
-                return true;
-            }            
+            result = hits
+                .Where(x => x.collider.gameObject.GetComponent<Hex>() != null)
+                .Select(x => x.collider.gameObject.GetComponent<Hex>())
+                .ToList();
+
+            return true;                      
         }
 
         result = null;
