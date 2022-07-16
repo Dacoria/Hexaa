@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,6 +34,7 @@ public class GlowHighlight : MonoBehaviour
                     mat = new Material(glowMaterial);
 
                     mat.color = originalMaterials[i].color;
+                    cachedMaterialDict[mat.color] = mat;
                 }
                 newMaterials[i] = mat;
             }
