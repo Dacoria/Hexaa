@@ -6,24 +6,22 @@ using System.Collections;
 
 public class RocketDisplayScript : MonoBehaviour
 {
-    public TMP_Text TitleText;
-    private bool isLookingForRocketTarget;
+    public bool IsLookingForRocketTarget;
 
     private void Awake()
     {
-        TitleText.gameObject.SetActive(false);
-        isLookingForRocketTarget = false;
+        IsLookingForRocketTarget = false;
     }
 
     public void RocketButtonClicked()
     {
-        isLookingForRocketTarget = !isLookingForRocketTarget;
-        TitleText.gameObject.SetActive(isLookingForRocketTarget);
+        IsLookingForRocketTarget = !IsLookingForRocketTarget;
+        Textt.GameSync("Select tile");
     }
 
     private void Update()
     {
-        if (isLookingForRocketTarget)
+        if (IsLookingForRocketTarget)
         {
             DetectMouseClick();
         }
@@ -34,7 +32,7 @@ public class RocketDisplayScript : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 mousePos = Input.mousePosition;
-            TryHandleRocketTileSelection(mousePos);            
+            TryHandleRocketTileSelection(mousePos);
         }
     }
 
@@ -59,7 +57,7 @@ public class RocketDisplayScript : MonoBehaviour
     private void FireRocketOnHighlightedTile()
     {
         NetworkHelper.instance.GetMyPlayer().GetComponent<PlayerRocketHandler>().FireRocket(HighlightedHex);
-        TitleText.gameObject.SetActive(false);
+        Textt.GameSync("");
         StartCoroutine(DisableHighlightInXSeconds(1f));        
     }
 
@@ -67,6 +65,7 @@ public class RocketDisplayScript : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
         HighlightedHex.DisableHighlight();
+        IsLookingForRocketTarget = false;
     }
 
     private void HighlightTile(List<Hex> result)

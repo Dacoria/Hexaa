@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class MonoHelper : MonoBehaviour
 {
     public static MonoHelper instance;
+    public RocketDisplayScript RocketDisplayScript;
 
     private void Awake()
     {
@@ -33,5 +34,11 @@ public class MonoHelper : MonoBehaviour
 
         result = null;
         return false;
+    }
+
+
+    public bool CanProcessTileHighlighting()
+    {
+        return !RocketDisplayScript.IsLookingForRocketTarget;
     }
 }

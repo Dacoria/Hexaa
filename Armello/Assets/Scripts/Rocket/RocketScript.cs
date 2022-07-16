@@ -5,6 +5,8 @@ public class RocketScript : MonoBehaviour
 {
     private Vector3 endposition;
     public GameObject Explosion;
+    public PlayerScript Player;
+    public Hex HexTarget;
 
     private void Start()
     {
@@ -17,7 +19,18 @@ public class RocketScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        var explosion = Instantiate(Explosion, collision.transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        if(collision.gameObject.GetComponent<Hex>() != null)
+        {
+            var explosion = Instantiate(Explosion, collision.transform.position, Quaternion.identity);
+            ActionEvents.PlayerRocketHit?.Invoke(Player, HexTarget);
+            Destroy(gameObject);
+        }
+        else if (collision.gameObject.GetComponent<PlayerScript>() != null)
+        {
+            var explosion = Instantiate(Explosion, HexTarget.transform.position, Quaternion.identity);
+
+            ActionEvents.PlayerRocketHit?.Invoke(Player, HexTarget);
+            Destroy(gameObject);
+        }
     }
 }

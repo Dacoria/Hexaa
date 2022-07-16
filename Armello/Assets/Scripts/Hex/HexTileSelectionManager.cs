@@ -12,6 +12,11 @@ public class HexTileSelectionManager : MonoBehaviour
     
     public void HandleMouseClick(Vector3 mousePosition)
     {
+        if(!MonoHelper.instance.CanProcessTileHighlighting())
+        {
+            return;
+        }
+
         // highlighted betekent: Valid moves voor player om heen te gaan
 
         List<Hex> selectedHexes;

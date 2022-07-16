@@ -20,5 +20,7 @@ public class PlayerScript : MonoBehaviour
 
         var tilePos = transform.position.ConvertPositionToOffset();
         CurrentHexTile = HexGrid.GetTileAt(tilePos);
+
+        transform.position = CurrentHexTile.transform.position;
     }
 }
