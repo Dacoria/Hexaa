@@ -9,15 +9,15 @@ public class HexTileSelectionManager : MonoBehaviour
     private List<Vector3Int> validNeighboursHightlighted = new List<Vector3Int>();
 
     private PlayerScript SelectedPlayer;
-
-    public void HandleClick(Vector3 mousePosition)
+    
+    public void HandleMouseClick(Vector3 mousePosition)
     {
         // highlighted betekent: Valid moves voor player om heen te gaan
 
         List<Hex> selectedHexes;
-        if (FindTile(mousePosition, out selectedHexes))
+        if (MonoHelper.instance.FindTile(mousePosition, out selectedHexes))
         {
-            HandleClickedOnTile(selectedHexes);
+            HandleClickOnTile(selectedHexes);
         }
         else
         {
@@ -26,7 +26,7 @@ public class HexTileSelectionManager : MonoBehaviour
         }
     }
 
-    private void HandleClickedOnTile(List<Hex> selectedHexTiles)
+    private void HandleClickOnTile(List<Hex> selectedHexTiles)
     {
         var currentPlayer = NetworkHelper.instance.GetMyPlayer();
         if(SelectedPlayer != null && currentPlayer == SelectedPlayer)
@@ -93,25 +93,5 @@ public class HexTileSelectionManager : MonoBehaviour
                 HexGrid.GetTileAt(neightbour).EnableHighlight();
             }
         }
-    }
-
-    private bool FindTile(Vector3 mousePosition, out List<Hex> result)
-    {
-        var layermask = 1 << LayerMask.NameToLayer(Statics.LAYER_MASK_HEXTILE);
-
-        var ray = Camera.main.ScreenPointToRay(mousePosition);
-        var hits = Physics.RaycastAll(ray, layermask);
-        if (hits.Length > 0)
-        {
-            result = hits
-                .Where(x => x.collider.gameObject.GetComponent<Hex>() != null)
-                .Select(x => x.collider.gameObject.GetComponent<Hex>())
-                .ToList();
-
-            return true;                      
-        }
-
-        result = null;
-        return false;
-    }
+    }    
 }
