@@ -18,12 +18,12 @@ public class Hex : MonoBehaviour
 
     public void EnableHighlight()
     {
-        glowHighlight.ToggleGlow(true);
+        glowHighlight.SetGlow(true);
     }
 
     public void DisableHighlight()
     {
-        glowHighlight.ToggleGlow(false);
+        glowHighlight.SetGlow(false);
     }
 
     public int GetCost() => HexType switch

@@ -21,6 +21,11 @@ public class GlowHighlight : MonoBehaviour
     {
         foreach(var renderer in GetComponentsInChildren<Renderer>())
         {
+            if(renderer.name.StartsWith("Particle"))
+            {
+                continue;
+            }
+
             var originalMaterials = renderer.materials;
             originalMaterialDict.Add(renderer, originalMaterials);
 
@@ -43,34 +48,38 @@ public class GlowHighlight : MonoBehaviour
         }
     }
 
-    public void ToggleGlow()
+    private void UpdateGlow()
     {
-        if(isGlowing)
-        {
-            foreach(var renderer in originalMaterialDict.Keys)
-            {
-                renderer.materials = originalMaterialDict[renderer];
-            }
-        }
-        else
+        if (isGlowing)
         {
             foreach (var renderer in originalMaterialDict.Keys)
             {
                 renderer.materials = glowMaterialDict[renderer];
             }
         }
-
-
-        isGlowing = !isGlowing;
+        else
+        {
+            foreach (var renderer in originalMaterialDict.Keys)
+            {
+                renderer.materials = originalMaterialDict[renderer];
+            }
+        }
     }
 
-    public void ToggleGlow(bool isGlowing)
+    public void SetGlow(bool isGlowing)
     {
-        if(isGlowing == this.isGlowing)
+        this.isGlowing = isGlowing;
+    }
+
+
+    private bool oldGlow;
+    private void Update()
+    {
+        if (oldGlow != this.isGlowing)
         {
-            return;
+            UpdateGlow();
         }
-        ToggleGlow();
+
+        oldGlow = this.isGlowing;
     }
 }
-
