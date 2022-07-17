@@ -50,5 +50,10 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
         NetworkHelper.instance.RefreshPlayerGos();
         PlayerName = name;
         gameObject.SetActive(false);
+
+
+
+        // DEBUG CODE
+        GameHandler.instance.ResetGame();
     }
 }

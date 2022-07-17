@@ -23,7 +23,7 @@ public class GameHandler : MonoBehaviour
         HexGrid = FindObjectOfType<HexGrid>();
         ActionEvents.PlayerKilled += OnPlayerKilled;
         CurrentPlayer = NetworkHelper.instance.GetMyPlayer();
-    }    
+    }
     private void OnDestroy()
     {
         ActionEvents.PlayerKilled -= OnPlayerKilled;
@@ -43,8 +43,26 @@ public class GameHandler : MonoBehaviour
 
     public void ResetGame()
     {
+        if (HexGrid.IsLoaded() && NetworkHelper.instance.GetPlayers().Count > 0)
+        {
+            SetupNewGame();
+        }
+        else
+        {
+            StartCoroutine(CallbackInXSeconds(0.1f, ResetGame));
+        }
+    }
+
+    private IEnumerator CallbackInXSeconds(float seconds, Action callback)
+    {
+        yield return new WaitForSeconds(seconds);
+        callback();
+    }
+
+    private void SetupNewGame()
+    {
         var players = NetworkHelper.instance.GetPlayers().Take(2).ToList();
-        if(players.Count >= 1)
+        if (players.Count >= 1)
         {
             players[0].gameObject.SetActive(true);
             var startHexTile = HexGrid.GetTileAt(StartTileP1);

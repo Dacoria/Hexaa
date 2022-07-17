@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class HexGrid : MonoBehaviour
 {
@@ -70,6 +71,11 @@ public class HexGrid : MonoBehaviour
         }
 
         return range1.Concat(secondUniqueList).Concat(thirdUniqueList).ToList();
+    }
+
+    public bool IsLoaded()
+    {
+        return GetAllTiles().Count > 50;
     }
 
     public List<Vector3Int> GetNeighboursFor(Vector3Int hexCoordinates)

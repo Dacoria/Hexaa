@@ -5667,6 +5667,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2334084384906398252, guid: 5004fb6a86767da4e889029cb91f4a4f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2334084385751822530, guid: 5004fb6a86767da4e889029cb91f4a4f, type: 3}
       propertyPath: m_Name
       value: LevelLoader
@@ -6103,7 +6107,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.4
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

@@ -877,6 +877,8 @@ MonoBehaviour:
   NameInputField: {fileID: 1558099979}
   StartOnlineFastButton: {fileID: 1746627632}
   OfflineButton: {fileID: 109439048}
+  AutoStartOnline: 1
+  AutoStartOffline: 0
   ConnectMethod: 0
 --- !u!4 &1232007463
 Transform:

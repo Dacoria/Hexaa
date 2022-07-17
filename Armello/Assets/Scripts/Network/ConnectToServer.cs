@@ -3,13 +3,33 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class ConnectToServer : MonoBehaviourPunCallbacks
 {
     public TMP_InputField NameInputField;
     public Button StartOnlineFastButton;
     public Button OfflineButton;
-  
+
+    public bool AutoStartOnline;
+    public bool AutoStartOffline;
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        if(AutoStartOnline)
+        {
+            NameInputField.text = NameGen.Get();
+            StartGameOnlineFast();
+        }
+        else if (AutoStartOffline)
+        {
+            NameInputField.text = NameGen.Get();
+            StartGameOffline();
+        }
+    }
+
 
     public ConnectMethod ConnectMethod;
 
