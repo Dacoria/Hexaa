@@ -9,38 +9,22 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 {
     public Hex CurrentHexTile;
     public bool IsAi;
-    private HexGrid HexGrid;
     public int PlayerId;
-    public int SentServerTimestamp;
     public string PlayerName;
 
-    public bool HasDoneMovementThisTurn;
-    public bool HasFiredRocketThisTurn;
+    [ComponentInject] private PhotonView photonView;
 
-    private void OnEnable()
+    private void Awake()
     {
-        StartCoroutine(InitSetCurrentHexTile());
+        this.ComponentInject();
     }
-
-    private IEnumerator InitSetCurrentHexTile()
-    {
-        yield return new WaitForSeconds(0.5f);
-        HexGrid = FindObjectOfType<HexGrid>();
-
-        var tilePos = transform.position.ConvertPositionToOffset();
-        CurrentHexTile = HexGrid.GetTileAt(tilePos);
-
-        transform.position = CurrentHexTile.transform.position;
-    }
-
+    
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         object[] instantiationData = info.photonView.InstantiationData;
         var name = instantiationData[0].ToString();
         IsAi = bool.Parse(instantiationData[1].ToString());
         var hosterCounterId = int.Parse(instantiationData[2].ToString());
-        SentServerTimestamp = info.SentServerTimestamp;
-
 
         if (PhotonNetwork.OfflineMode || IsAi)
         {
@@ -53,9 +37,6 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 
         NetworkHelper.instance.RefreshPlayerGos();
         PlayerName = name;
-        gameObject.SetActive(false);
-
-        // DEBUG CODE
-        GameHandler.instance.ResetGame();
+        gameObject.transform.position = new Vector3(-1000, 1000, -1000);// uit scherm        
     }
 }

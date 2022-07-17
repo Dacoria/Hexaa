@@ -13,18 +13,7 @@ public class NetworkActionEvents : MonoBehaviour
         instance = this;
         this.ComponentInject();
     }
-
-    public void PlayerRocketFired(PlayerScript playerWhoShotRocket, Hex hexTile)
-    {
-        photonView.RPC("RPC_AE_PlayerRocketFired", RpcTarget.All, playerWhoShotRocket.PlayerId, (Vector3)hexTile.HexCoordinates);
-    }
-
-    [PunRPC]
-    public void RPC_AE_PlayerRocketFired(int pIdWhoShotRocket, Vector3 hexTile)
-    {
-        ActionEvents.FirePlayerRocket?.Invoke(pIdWhoShotRocket.GetPlayer(), hexTile.GetHex());
-    }
-
+    
     public void PlayerRocketHitTile(PlayerScript playerWhoShotRocket, Hex hexTile, PlayerScript hitByRocket, bool playerKilled)
     {
         photonView.RPC("RPC_AE_PlayerRocketHitTile", RpcTarget.All, playerWhoShotRocket.PlayerId, (Vector3)hexTile.HexCoordinates, hitByRocket == null ? -1 : hitByRocket.PlayerId, playerKilled);
@@ -36,15 +25,15 @@ public class NetworkActionEvents : MonoBehaviour
         ActionEvents.PlayerRocketHitTile?.Invoke(pIdWhoShotRocket.GetPlayer(), hexTile.GetHex(), pIdhitByRocket == -1 ? null : pIdhitByRocket.GetPlayer(), playerKilled);
     }
 
-    public void PlayerHasMoved(PlayerScript player, Hex hexTile)
+    public void PlayerAbility(PlayerScript player, Hex hexTile, AbilityType abilityType)
     {
-        photonView.RPC("RPC_AE_PlayerHasMoved", RpcTarget.All, player.PlayerId, (Vector3)hexTile.HexCoordinates);
+        photonView.RPC("RPC_AE_PlayerAbility", RpcTarget.All, player.PlayerId, (Vector3)hexTile.HexCoordinates, abilityType);
     }
 
     [PunRPC]
-    public void RPC_AE_PlayerHasMoved(int pId, Vector3 hexTile)
+    public void RPC_AE_PlayerAbility(int pId, Vector3 hexTile, AbilityType abilityType)
     {
-        ActionEvents.PlayerHasMoved?.Invoke(pId.GetPlayer(), hexTile.GetHex());
+        ActionEvents.PlayerAbility?.Invoke(pId.GetPlayer(), hexTile.GetHex(), abilityType);
     }
 
     public void NewRoundStarted(List<PlayerScript> players, PlayerScript currentPlayer)
@@ -58,15 +47,15 @@ public class NetworkActionEvents : MonoBehaviour
         ActionEvents.NewRoundStarted?.Invoke(playerIds.Select(x => x.GetPlayer()).ToList(), currentPlayerId.GetPlayer());
     }
 
-    public void RoundEnded()
+    public void RoundEnded(bool reachedMiddle)
     {
-        photonView.RPC("RPC_AE_RoundEnded", RpcTarget.All);
+        photonView.RPC("RPC_AE_RoundEnded", RpcTarget.All, reachedMiddle);
     }
 
     [PunRPC]
-    public void RPC_AE_RoundEnded()
+    public void RPC_AE_RoundEnded(bool reachedMiddle)
     {
-        ActionEvents.RoundEnded?.Invoke();
+        ActionEvents.RoundEnded?.Invoke(reachedMiddle);
     }
 
     public void NewPlayerTurn(PlayerScript currentPlayer)

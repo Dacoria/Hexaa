@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public static class StaticHelper
 {
@@ -50,5 +51,15 @@ public static class StaticHelper
     public static Hex GetHex(this Vector3 coordinates)
     {
         return HexGrid.instance.GetTileAt(new Vector3Int((int)coordinates.x, (int)coordinates.y, (int)coordinates.z));
+    }
+
+    public static int GetPunOwnerActorNr(this GameObject go)
+    {
+        var photonView = go.GetComponent<PhotonView>();
+        if (photonView != null)
+        {
+            return photonView.OwnerActorNr;
+        }
+        return -1;
     }
 }

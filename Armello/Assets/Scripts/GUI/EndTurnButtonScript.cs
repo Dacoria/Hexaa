@@ -6,17 +6,18 @@ using UnityEngine.UI;
 
 public class EndTurnButtonScript : MonoBehaviour
 {
-    [ComponentInject] private Button button;
+    [ComponentInject] public Button Button;
+
     private void Awake()
     {
-        this.ComponentInject();
+        this.ComponentInject();    
     }
-    
+
     public void OnEndTurnButtonClick()
     {
-        if (GameHandler.instance.CurrentPlayer == Netw.MyPlayer())
+        if (GameHandler.instance.CurrentPlayer.IsOnMyNetwork())
         {
-            GameHandler.instance.PlayerEndsTurn(Netw.MyPlayer());
+            GameHandler.instance.PlayerEndsTurn(GameHandler.instance.CurrentPlayer);
         }
     }
 }

@@ -33,6 +33,5 @@ public static class Direction
         {
             return directionsOffsetOdd;
         }
-       
     }
 }

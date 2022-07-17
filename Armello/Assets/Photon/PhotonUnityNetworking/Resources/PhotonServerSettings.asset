@@ -47,6 +47,8 @@ MonoBehaviour:
   - RPC_AE_RoundEnded
   - RPC_AE_NewPlayerTurn
   - RPC_AE_PlayerRocketFired
+  - RPC_AE_PlayerAbility
+  - RPC_AE_UpdatePlayerCounters
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

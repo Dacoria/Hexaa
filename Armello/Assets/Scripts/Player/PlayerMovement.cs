@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnMovingFinished()
     {
         playerScript.CurrentHexTile = NewHexTile;
-        NetworkActionEvents.instance.PlayerHasMoved(playerScript, NewHexTile);
+        NetworkActionEvents.instance.PlayerAbility(playerScript, NewHexTile, AbilityType.Movement);
     }
 
     private IEnumerator MoveToDestination(Vector3 endPosition, float duration, Action callbackOnFinished)

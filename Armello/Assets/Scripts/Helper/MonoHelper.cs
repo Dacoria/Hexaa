@@ -36,12 +36,6 @@ public class MonoHelper : MonoBehaviour
         return false;
     }
 
-    public IEnumerator CallbackInXSeconds(float seconds, Action callback)
-    {
-        yield return new WaitForSeconds(seconds);
-        callback();
-    }
-
     public bool CanProcessTileHighlighting()
     {
         return !RocketDisplayScript.IsLookingForRocketTarget;

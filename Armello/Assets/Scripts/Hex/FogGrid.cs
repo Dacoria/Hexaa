@@ -16,46 +16,47 @@ public class FogGrid : MonoBehaviour
     {
         ActionEvents.NewRoundStarted += OnNewRoundStarted;
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
-        ActionEvents.PlayerHasMoved += OnPlayerHasMoved;
+        ActionEvents.PlayerAbility += OnPlayerAbility;
     }    
 
     private void OnDestroy()
     {
         ActionEvents.NewRoundStarted -= OnNewRoundStarted;
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
-        ActionEvents.PlayerHasMoved -= OnPlayerHasMoved;
+        ActionEvents.PlayerAbility -= OnPlayerAbility;
     }
 
     private void OnNewRoundStarted(List<PlayerScript> allPlayers, PlayerScript playersTurn)
     {
-        UpdateVisibility(playersTurn);
+        // initiele setup --> daarna OnNewPlayerTurn voor de beurt updaten
+        UpdateVisibility(Netw.MyPlayer());
     }
 
     private void OnNewPlayerTurn(PlayerScript playersTurn)
     {
-        UpdateVisibility(playersTurn);
+        if (playersTurn.IsOnMyNetwork())
+        {
+            UpdateVisibility(playersTurn);
+        }
     }       
 
-    private void OnPlayerHasMoved(PlayerScript player, Hex hexDestination)
+    private void OnPlayerAbility(PlayerScript player, Hex hexDestination, AbilityType abilityType)
     {
-        if(player.PlayerId == Netw.MyPlayer().PlayerId)
+        if(abilityType == AbilityType.Movement && player.IsOnMyNetwork())
         {
             UpdateVisibility(player);
         }
     }
 
-    private void UpdateVisibility(PlayerScript currentTurnPlayer)
+    private void UpdateVisibility(PlayerScript player)
     {
-        // geen ai of andere dingen? dan update je alleen je eigen fog, ook al ben je niet aan de beurt. Anders: Toon van wie er aan de beurt is
-        var playerToUpdate = currentTurnPlayer.IsOnMyNetwork() ? currentTurnPlayer : Netw.CurrPlayer();
-
-        UpdateMyFog(playerToUpdate);
-        UpdatePlayersVisibleInMyFog(playerToUpdate);
+        UpdateMyFog(player);
+        UpdatePlayersVisibleInMyFog(player);
     }   
 
-    private void UpdateMyFog(PlayerScript currentTurnPlayer)
+    private void UpdateMyFog(PlayerScript player)
     {
-        var currPlayerTile = currentTurnPlayer.CurrentHexTile;
+        var currPlayerTile = player.CurrentHexTile;
         var neighbourTiles = hexGrid.GetNeighboursFor(currPlayerTile.HexCoordinates, 1);
 
         var allTiles = hexGrid.GetAllTiles();

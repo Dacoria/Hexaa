@@ -37,7 +37,43 @@ public class HexGrid : MonoBehaviour
         return result;
     }
 
+    public List<Vector3Int> GetNeighboursForV2(Vector3Int hexCoordinates, int range)
+    {
+        var neighboursRange1 = GetNeighboursFor(hexCoordinates);     
 
+        var totalProcessedUniqueList = neighboursRange1;
+        var previousRankUniqueList = neighboursRange1;
+
+        for (int currentRank = 2; currentRank <= range && currentRank <= 10; currentRank++)
+        {
+            var newUniqueList = GetUniqueNeighboursNotVisited(hexCoordinates, totalProcessedUniqueList, previousRankUniqueList);
+            totalProcessedUniqueList = totalProcessedUniqueList.Concat(newUniqueList).ToList();
+            previousRankUniqueList = newUniqueList.ToList();
+        }
+
+        return totalProcessedUniqueList;
+    }
+
+    private HashSet<Vector3Int> GetUniqueNeighboursNotVisited(Vector3Int startHexToExclude, List<Vector3Int> previouslyVisited, List<Vector3Int> previousRankUniqueList)
+    {
+        var newUniqueList = new HashSet<Vector3Int>();
+
+        foreach (var neightbourRange in previousRankUniqueList)
+        {
+            var neighboursOfPreviousRank = GetNeighboursFor(neightbourRange);
+            foreach (var neighbourOfNeighbor in neighboursOfPreviousRank)
+            {
+                if (!previouslyVisited.Any(x => x == neighbourOfNeighbor) && neighbourOfNeighbor != startHexToExclude)
+                {
+                    newUniqueList.Add(neighbourOfNeighbor);
+                }
+            }
+        }
+
+        return newUniqueList;
+    }
+
+    // VERANDEREN DOOR GetNeighboursForV2???? testen todo
     public List<Vector3Int> GetNeighboursFor(Vector3Int hexCoordinates, int range)
     {
         var range1 = GetNeighboursFor(hexCoordinates);

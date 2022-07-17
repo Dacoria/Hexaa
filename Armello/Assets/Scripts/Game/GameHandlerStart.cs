@@ -17,20 +17,26 @@ public partial class GameHandler : MonoBehaviour
 
     private void SetupNewGame()
     {
-        var players = NetworkHelper.instance.GetPlayers().Take(StartPosTiles.Count).ToList();
+        var players = NetworkHelper.instance.GetPlayers().OrderBy(x => x.PlayerId).Take(StartPosTiles.Count).ToList();
         CurrentPlayer = players[0];
         NetworkActionEvents.instance.NewRoundStarted(players, CurrentPlayer);
     }
 
     public void ResetGame()
     {
+        StartCoroutine(CR_ResetGame());
+    }
+
+    public IEnumerator CR_ResetGame()
+    {
+        yield return new WaitForSeconds(0.1f);
         if (HexGrid.IsLoaded() && NetworkHelper.instance.GetPlayers().Count > 0)
         {
             SetupNewGame();
         }
         else
         {
-            StartCoroutine(MonoHelper.instance.CallbackInXSeconds(0.1f, ResetGame));
+            StartCoroutine(CR_ResetGame());
         }
     }
 
@@ -42,45 +48,37 @@ public partial class GameHandler : MonoBehaviour
 
     private void OnNewRoundStarted(List<PlayerScript> players, PlayerScript currentPlayer)
     {
-        ResetGameLocal();
+        GameEnded = false;
 
+        // refresh om te checken
+        AllPlayers = NetworkHelper.instance.GetPlayers().Take(StartPosTiles.Count).ToList();
+
+        // check
         var playersMatch = players.Select(x => x.PlayerId).All(AllPlayers.Select(x => x.PlayerId).Contains);
         var sameSize = players.Count == AllPlayers.Count;
+        if (!playersMatch || !sameSize) { throw new Exception(); }
 
         // fix order....
         var playersRes = new List<PlayerScript>();
         for (int i = 0; i < players.Count; i++)
         {
-            var pId = players[i].PlayerId;
-            playersRes.Add(AllPlayers.Single(x => x.PlayerId == pId));
+            playersRes.Add(AllPlayers.Single(x => x.PlayerId == players[i].PlayerId));
         }
-
         AllPlayers = playersRes;
 
+        // reset local
+        ResetGameLocal();
 
-        if (playersMatch && sameSize)
-        {
-            CurrentPlayer = currentPlayer;
-            //ActionEvents.NewPlayerTurn?.Invoke(currentPlayer); // local; want OnNewRoundStarted is al via sync gegaan; status bekend
-            return;
-        }
-        else
-        {
-            throw new Exception();
-        }
+        CurrentPlayer = currentPlayer;        
     }
 
     private void ResetGameLocal()
     {
-        var players = NetworkHelper.instance.GetPlayers().Take(StartPosTiles.Count).ToList();
-        for (int i = 0; i < players.Count; i++)
+        for (int i = 0; i < AllPlayers.Count; i++)
         {
-            players[i].gameObject.SetActive(true);
             var startHexTile = HexGrid.GetTileAt(StartPosTiles[i]);
-            players[i].transform.position = startHexTile.transform.position;
-            players[i].CurrentHexTile = startHexTile;
+            AllPlayers[i].transform.position = startHexTile.transform.position;
+            AllPlayers[i].CurrentHexTile = startHexTile;
         }
-
-        AllPlayers = players;
     }
 }

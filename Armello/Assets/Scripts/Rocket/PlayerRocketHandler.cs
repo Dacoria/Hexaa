@@ -15,22 +15,26 @@ public class PlayerRocketHandler : MonoBehaviour
 
     private void Start()
     {
-        ActionEvents.FirePlayerRocket += OnFirePlayerRocket;
+        ActionEvents.PlayerAbility += OnPlayerAbility;
     }
 
     private void OnDestroy()
     {
-        ActionEvents.FirePlayerRocket -= OnFirePlayerRocket;
+        ActionEvents.PlayerAbility -= OnPlayerAbility;
     }
 
     public void FireRocket(Hex hexTarget)
-    {        
-
-        NetworkActionEvents.instance.PlayerRocketFired(playerScript, hexTarget);
+    {
+        NetworkActionEvents.instance.PlayerAbility(playerScript, hexTarget, AbilityType.Rocket);
     }
 
-    public void OnFirePlayerRocket(PlayerScript playerThatFiresRocket, Hex hexTarget)
+    public void OnPlayerAbility(PlayerScript playerThatFiresRocket, Hex hexTarget, AbilityType abilityType)
     {
+        if(abilityType != AbilityType.Rocket)
+        {
+            return;
+        }
+
         if (playerScript.IsAi)
         {
             return; // wordt al los afgevuurd door de echte speler

@@ -43,7 +43,6 @@ public class Hex : MonoBehaviour
     public bool IsObstacle() => HexType == HexType.Obstacle;
 }
 
-
 public enum HexType
 {
     None,

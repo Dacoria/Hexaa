@@ -19,18 +19,28 @@ public partial class GameHandler : MonoBehaviour
         HexGrid = FindObjectOfType<HexGrid>();
         ActionEvents.PlayerRocketHitTile += OnPlayerRocketHitTile;
         ActionEvents.NewRoundStarted += OnNewRoundStarted;
+        ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
+        ActionEvents.RoundEnded += OnRoundEnded;
+    }    
+
+    private void OnNewPlayerTurn(PlayerScript player)
+    {
+        CurrentPlayer = player;
     }
+
     private void OnDestroy()
     {
         ActionEvents.PlayerRocketHitTile -= OnPlayerRocketHitTile;
         ActionEvents.NewRoundStarted -= OnNewRoundStarted;
+        ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
+        ActionEvents.RoundEnded -= OnRoundEnded;
     }
 
     private void OnPlayerRocketHitTile(PlayerScript ownerRocket, Hex hex, PlayerScript playerHit, bool playerKilled)
     {
         if (playerKilled)
         {
-            CheckEndRound();
+            EndGameOnRocketHit();
         }        
     }    
 }

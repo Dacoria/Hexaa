@@ -5,9 +5,16 @@ using UnityEngine;
 
 public partial class GameHandler : MonoBehaviour
 {
-    private void CheckEndRound()
+    public bool GameEnded;
+
+    private void EndGameOnRocketHit()
     {
-        NetworkActionEvents.instance.RoundEnded();
+        NetworkActionEvents.instance.RoundEnded(false);
         StartCoroutine(ResetInXSeconds(5));
+    }
+
+    private void OnRoundEnded(bool reachedMiddle)
+    {
+        GameEnded = true;
     }
 }

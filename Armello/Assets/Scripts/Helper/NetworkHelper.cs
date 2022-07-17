@@ -23,18 +23,17 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
     {
         instance = this;
         this.ComponentInject();
-        RefreshPlayerGos();
     }
 
     private void Start()
     {
         PlayerList = PhotonNetwork.PlayerList;
-    } 
+        RefreshPlayerGos();
+    }
 
     public void RefreshPlayerGos()
     {
         // voor nu: alleen toevoegen (want door tags pak je niet inactieve obj)
-
         var playersEnabledWithTag = GameObject.FindGameObjectsWithTag(Statics.TAG_PLAYER).Select(x => x.GetComponent<PlayerScript>()).ToList();
 
         foreach(var player in playersEnabledWithTag)
@@ -44,6 +43,13 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
                 AllPlayers.Add(player);
             }
         }
+    }
+
+    public PlayerScript OtherPlayerClosest(PlayerScript me, Vector3 positionToCompareDistance)
+    {
+        return AllPlayers.Where(x => x != me)
+            .OrderBy(x => Vector3.Distance(x.transform.position, positionToCompareDistance))
+            .First();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -68,10 +74,12 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
     public List<PlayerScript> GetMyPlayers(bool includeAi)
     {
         var players = AllPlayers;
-        return players
+        var res = players
             .Where(x => includeAi || !x.IsAi)
             .Where(x => x.GetComponent<PhotonView>().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber)
             .ToList();
+
+        return res;
     }
 
     public PlayerScript GetMyPlayer()
