@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 {
@@ -11,7 +12,6 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     private HexGrid HexGrid;
     public int PlayerId;
     public int SentServerTimestamp;
-
     public string PlayerName;      
 
     private void OnEnable()

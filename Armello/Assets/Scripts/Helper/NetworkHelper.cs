@@ -68,7 +68,7 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
     public PlayerScript GetMyPlayer()
     {
         var players = AllPlayers;
-        return players[0];
+        return players.FirstOrDefault();
     }
 
     public List<PlayerScript> GetPlayers()

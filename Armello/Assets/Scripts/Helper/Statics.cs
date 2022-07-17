@@ -7,4 +7,6 @@
 
     public static string LAYER_MASK_HEXTILE = "HexTile";
     public static string LAYER_MASK_CHARACTER = "Character";
+
+    public static string ANIMATION_TRIGGER_START_ANIMATION_SCENE = "Start";
 }
