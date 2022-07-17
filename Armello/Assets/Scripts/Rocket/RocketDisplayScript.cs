@@ -3,15 +3,19 @@ using TMPro;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.UI;
 
 public class RocketDisplayScript : MonoBehaviour
 {
     public bool IsLookingForRocketTarget;
     private bool isFiringRocket;
 
+    [ComponentInject] public Button button;
+
     private void Awake()
     {
         IsLookingForRocketTarget = false;
+        this.ComponentInject();
     }
 
     public void RocketButtonClicked()
@@ -59,7 +63,7 @@ public class RocketDisplayScript : MonoBehaviour
     private void FireRocketOnHighlightedTile()
     {
         isFiringRocket = true;
-        NetworkHelper.instance.GetMyPlayer().GetComponent<PlayerRocketHandler>().FireRocket(HighlightedHex);
+        Netw.MyPlayer().GetComponent<PlayerRocketHandler>().FireRocket(HighlightedHex);
         Textt.GameSync("Firing!");
         StartCoroutine(DisableHighlightInXSeconds(1.15f));        
     }

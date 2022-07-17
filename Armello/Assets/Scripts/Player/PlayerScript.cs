@@ -12,7 +12,10 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     private HexGrid HexGrid;
     public int PlayerId;
     public int SentServerTimestamp;
-    public string PlayerName;      
+    public string PlayerName;
+
+    public bool HasDoneMovementThisTurn;
+    public bool HasFiredRocketThisTurn;
 
     private void OnEnable()
     {

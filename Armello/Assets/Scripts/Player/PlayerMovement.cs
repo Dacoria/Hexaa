@@ -13,11 +13,6 @@ public class PlayerMovement : MonoBehaviour
         this.ComponentInject();
     }
 
-    private void Start()
-    {
-        
-    }
-
     public void DoMove(Hex selectedHex)
     {        
         NewHexTile = selectedHex;
@@ -32,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnMovingFinished()
     {
         playerScript.CurrentHexTile = NewHexTile;
-        ActionEvents.PlayerHasMoved?.Invoke(playerScript, NewHexTile);
+        NetworkActionEvents.instance.PlayerHasMoved(playerScript, NewHexTile);
     }
 
     private IEnumerator MoveToDestination(Vector3 endPosition, float duration, Action callbackOnFinished)

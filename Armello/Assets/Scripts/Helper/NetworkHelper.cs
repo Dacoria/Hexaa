@@ -29,7 +29,7 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
     private void Start()
     {
         PlayerList = PhotonNetwork.PlayerList;
-    }
+    } 
 
     public void RefreshPlayerGos()
     {

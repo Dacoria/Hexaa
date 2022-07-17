@@ -6,11 +6,15 @@ using System.Linq;
 public class SpawnPlayers : MonoBehaviour
 {
     public GameObject PlayerPrefab;
-
+    public bool SpawnDummyPlayerOnStart;
     private void Start()
     {
-
         SpawnPlayer("P" + GetPlayerCounter(), false);
+
+        if(SpawnDummyPlayerOnStart)
+        {
+            SpawnDummyPlayer();
+        }
     }
 
     private int GetPlayerCounter()

@@ -10,6 +10,13 @@ public class HexGrid : MonoBehaviour
     // cache
     private Dictionary<Vector3Int, List<Vector3Int>> hexTileNeightboursDict = new Dictionary<Vector3Int, List<Vector3Int>>();
 
+    public static HexGrid instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         foreach(var hex in FindObjectsOfType<Hex>())

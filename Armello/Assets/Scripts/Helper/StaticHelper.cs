@@ -36,4 +36,19 @@ public static class StaticHelper
     {
         return values.Contains(val);
     }
+
+    public static PlayerScript GetPlayer(this int id)
+    {
+        return NetworkHelper.instance.GetPlayers().FirstOrDefault(p => p.PlayerId == id);
+    }
+
+    public static Hex GetHex(this Vector3Int coordinates)
+    {
+        return HexGrid.instance.GetTileAt(coordinates);
+    }
+
+    public static Hex GetHex(this Vector3 coordinates)
+    {
+        return HexGrid.instance.GetTileAt(new Vector3Int((int)coordinates.x, (int)coordinates.y, (int)coordinates.z));
+    }
 }

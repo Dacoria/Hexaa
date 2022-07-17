@@ -20,11 +20,25 @@ public class PlayerInput : MonoBehaviour
 
     private void DetectMouseClick()
     {
-        if (Input.GetMouseButtonDown(0) &&
-            player.PlayerId == NetworkHelper.instance.GetMyPlayer().PlayerId)
+        if (Input.GetMouseButtonDown(0))
         {
-            Vector3 mousePos = Input.mousePosition;
-            HexTileSelectionManager.instance.HandleMouseClick(mousePos);
+            if(GameHandler.instance.CurrentPlayer != player)
+            {
+                return;
+            }
+            if(!MonoHelper.instance.CanProcessTileHighlighting())
+            {
+                return;
+            }
+
+            if(HexTileSelectionManager.instance.SelectedPlayer == null)
+            {
+                // movement aanzetten gaat eerst via knoppen
+                return;
+            }
+
+
+            HexTileSelectionManager.instance.HandleMouseClick(Input.mousePosition);
         }
     }
 }

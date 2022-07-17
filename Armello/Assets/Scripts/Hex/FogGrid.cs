@@ -31,7 +31,7 @@ public class FogGrid : MonoBehaviour
 
     private void OnPlayerHasMoved(PlayerScript player, Hex hexDestination)
     {
-        if(player.PlayerId == NetworkHelper.instance.GetMyPlayer().PlayerId)
+        if(player.PlayerId == Netw.MyPlayer().PlayerId)
         {
             UpdateMyFog();
         }
@@ -39,8 +39,7 @@ public class FogGrid : MonoBehaviour
 
     private void UpdateMyFog()
     {
-        var myPlayer = NetworkHelper.instance.GetMyPlayer();
-        var myTile = myPlayer.CurrentHexTile;
+        var myTile = Netw.MyPlayer().CurrentHexTile;
 
         var neighbourTiles = hexGrid.GetNeighboursFor(myTile.HexCoordinates, 1);
 
