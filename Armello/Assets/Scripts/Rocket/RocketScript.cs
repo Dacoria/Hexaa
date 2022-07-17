@@ -36,7 +36,7 @@ public class RocketScript : MonoBehaviour
 
     private void PlayerRocketHitTile(PlayerScript playerWhoShotRocket, Hex hexTileHit)
     {
-        if(!Netw.IsMyTurn)
+        if(!Netw.IsMyTurn())
         {
             // logica bij curr player
             return;

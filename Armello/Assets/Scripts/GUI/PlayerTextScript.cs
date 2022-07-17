@@ -1,5 +1,4 @@
 using TMPro;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerTextScript : MonoBehaviour
@@ -15,7 +14,6 @@ public class PlayerTextScript : MonoBehaviour
     void Update()
     {
         playerName.text = playerScript.PlayerName;
-
         transform.rotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
     }
 }

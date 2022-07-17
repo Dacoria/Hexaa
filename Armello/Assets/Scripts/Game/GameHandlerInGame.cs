@@ -15,8 +15,7 @@ public partial class GameHandler : MonoBehaviour
 
     private void NextTurn()
     {
-        CurrentPlayer = NextPlayer();        
-
+        CurrentPlayer = NextPlayer();
         NetworkActionEvents.instance.NewPlayerTurn(CurrentPlayer);
     }
 

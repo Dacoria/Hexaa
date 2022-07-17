@@ -19,9 +19,4 @@ public class EndTurnButtonScript : MonoBehaviour
             GameHandler.instance.PlayerEndsTurn(Netw.MyPlayer());
         }
     }
-
-    public void UpdateValue()
-    {
-        
-    }
 }

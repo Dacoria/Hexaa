@@ -50,11 +50,10 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
         {
             PlayerId = info.photonView.OwnerActorNr;
         }
+
         NetworkHelper.instance.RefreshPlayerGos();
         PlayerName = name;
         gameObject.SetActive(false);
-
-
 
         // DEBUG CODE
         GameHandler.instance.ResetGame();

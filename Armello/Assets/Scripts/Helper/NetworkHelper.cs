@@ -65,10 +65,18 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
         return AllPlayers;
     }
 
-    public PlayerScript GetMyPlayer()
+    public List<PlayerScript> GetMyPlayers(bool includeAi)
     {
         var players = AllPlayers;
-        return players.FirstOrDefault();
+        return players
+            .Where(x => includeAi || !x.IsAi)
+            .Where(x => x.GetComponent<PhotonView>().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber)
+            .ToList();
+    }
+
+    public PlayerScript GetMyPlayer()
+    {
+        return GetMyPlayers(false).FirstOrDefault();
     }
 
     public List<PlayerScript> GetPlayers()
