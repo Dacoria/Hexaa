@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,11 +17,59 @@ public class HexGrid : MonoBehaviour
         }
     }
 
+    public List<Hex> GetAllTiles()
+    {
+        return hexTileDict.Values.ToList();
+    }
+
     public Hex GetTileAt(Vector3Int hexCoordinates)
     {
         Hex result = null;
         hexTileDict.TryGetValue(hexCoordinates, out result);
         return result;
+    }
+
+
+    public List<Vector3Int> GetNeighboursFor(Vector3Int hexCoordinates, int range)
+    {
+        var range1 = GetNeighboursFor(hexCoordinates);
+        if(range <= 1)
+        {
+            return range1;
+        }
+
+        var secondUniqueList = new HashSet<Vector3Int>();
+        foreach (var neightbourRange in range1)
+        {
+            var neighboursOfNeighbor = GetNeighboursFor(neightbourRange, 1);
+            foreach(var neighbourOfNeighbor in neighboursOfNeighbor)
+            {
+                if (!range1.Any(x => x == neighbourOfNeighbor) && neighbourOfNeighbor != hexCoordinates)
+                {
+                    secondUniqueList.Add(neighbourOfNeighbor);
+                }
+            }
+        }
+
+        if (range <= 2)
+        {
+            return range1.Concat(secondUniqueList).ToList();
+        }
+
+        var thirdUniqueList = new HashSet<Vector3Int>();
+        foreach (var neightbourRange in secondUniqueList)
+        {
+            var neighboursOfNeighbor2 = GetNeighboursFor(neightbourRange, 1);
+            foreach (var neighbourOfNeighbor in neighboursOfNeighbor2)
+            {
+                if (!secondUniqueList.Any(x => x == neighbourOfNeighbor) && !range1.Any(x => x == neighbourOfNeighbor) && neighbourOfNeighbor != hexCoordinates)
+                {
+                    thirdUniqueList.Add(neighbourOfNeighbor);
+                }
+            }
+        }
+
+        return range1.Concat(secondUniqueList).Concat(thirdUniqueList).ToList();
     }
 
     public List<Vector3Int> GetNeighboursFor(Vector3Int hexCoordinates)

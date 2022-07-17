@@ -6,7 +6,12 @@ using UnityEngine.Events;
 
 public class PlayerInput : MonoBehaviour
 {
-    public UnityEvent<Vector3> PointerClick;
+    [ComponentInject] private PlayerScript player;
+
+    private void Awake()
+    {
+        this.ComponentInject();
+    }
 
     private void Update()
     {
@@ -15,10 +20,11 @@ public class PlayerInput : MonoBehaviour
 
     private void DetectMouseClick()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) &&
+            player.PlayerId == NetworkHelper.instance.GetMyPlayer().PlayerId)
         {
             Vector3 mousePos = Input.mousePosition;
-            PointerClick?.Invoke(mousePos);
+            HexTileSelectionManager.instance.HandleMouseClick(mousePos);
         }
     }
 }

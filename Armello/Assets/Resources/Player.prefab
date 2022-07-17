@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 3645293598411083039}
   - component: {fileID: 3645293598411083036}
   - component: {fileID: 3645293598411083037}
-  - component: {fileID: 3645293598411083026}
+  - component: {fileID: 3645293598470321500}
+  - component: {fileID: 5768494960248128124}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -49,21 +50,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c669732c0d964e4e9a118eed4b994eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PointerClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SelectionManager, Assembly-CSharp
-        m_MethodName: HandleClick
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &3645293598411083039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,6 +63,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentHexTile: {fileID: 0}
+  IsAi: 0
+  PlayerId: 0
+  SentServerTimestamp: 0
+  PlayerName: 
 --- !u!136 &3645293598411083036
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -127,7 +117,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3645293598411083026
+--- !u!114 &3645293598470321500
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -136,10 +126,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 3645293598411083032}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c20b485e3f8be4c8c49b2ae62c36d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 60565b7791a89464a9f58d463e393f4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RocketPrefab: {fileID: 2109403841698132331, guid: fcd98379b8ced564a85ff8b362a06118, type: 3}
+  RocketPrefab: {fileID: 7273217049370507789, guid: fcd98379b8ced564a85ff8b362a06118, type: 3}
+--- !u!114 &5768494960248128124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645293598411083032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &3645293598593087989
 PrefabInstance:
   m_ObjectHideFlags: 0

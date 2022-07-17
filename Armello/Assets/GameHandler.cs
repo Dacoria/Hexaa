@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameHandler : MonoBehaviour
@@ -9,11 +9,20 @@ public class GameHandler : MonoBehaviour
     private Vector3Int StartTileP1 = new Vector3Int(2, 0, 1);
     private Vector3Int StartTileP2 = new Vector3Int(11, 0, 9);
 
+    public PlayerScript CurrentPlayer;
+
+    public static GameHandler instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
         HexGrid = FindObjectOfType<HexGrid>();
         ActionEvents.PlayerKilled += OnPlayerKilled;
+        CurrentPlayer = NetworkHelper.instance.GetMyPlayer();
     }    
     private void OnDestroy()
     {
@@ -34,7 +43,7 @@ public class GameHandler : MonoBehaviour
 
     public void ResetGame()
     {
-        var players = NetworkHelper.instance.GetPlayers();
+        var players = NetworkHelper.instance.GetPlayers().Take(2).ToList();
         if(players.Count >= 1)
         {
             players[0].gameObject.SetActive(true);
@@ -49,6 +58,9 @@ public class GameHandler : MonoBehaviour
             players[1].transform.position = startHexTile.transform.position;
             players[1].CurrentHexTile = startHexTile;
         }
-    }
 
+        Textt.GameSync("New game started!");
+        CurrentPlayer = players[0];
+        ActionEvents.NewRoundStarted(players, CurrentPlayer);
+    }
 }

@@ -18,6 +18,8 @@ public class RocketExplosionHandler : MonoBehaviour
     private void OnPlayerRocketHit(PlayerScript playerWhoShotRocket, Hex hexTileHit)
     {
         var allPlayers = NetworkHelper.instance.GetPlayers();
+        var playerKilled = false;
+
         foreach (var player in allPlayers)
         {
             if (player.CurrentHexTile == hexTileHit)
@@ -25,7 +27,13 @@ public class RocketExplosionHandler : MonoBehaviour
                 // voor nu -> altijd dood met 1 raket-hit --> KILL
                 playerWhoShotRocket.gameObject.SetActive(false);
                 ActionEvents.PlayerKilled?.Invoke(playerWhoShotRocket);
+                playerKilled = true;
             }
+        }
+
+        if(!playerKilled)
+        {
+            Textt.GameSync("");
         }
     }
 }

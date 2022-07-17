@@ -7,6 +7,7 @@ public class Hex : MonoBehaviour
 {
     [ComponentInject] private HexCoordinates hexCoordinates;
     [ComponentInject] private GlowHighlight glowHighlight;
+    [ComponentInject] private FogHighlight fogHighlight;
     public Vector3Int HexCoordinates => hexCoordinates.offSetCooridnates;
 
     public HexType HexType;
@@ -24,6 +25,11 @@ public class Hex : MonoBehaviour
     public void DisableHighlight()
     {
         glowHighlight.SetGlow(false);
+    }
+
+    public void SetFogHighlight(bool fogEnabled)
+    {
+        fogHighlight.SetFog(fogEnabled);
     }
 
     public int GetCost() => HexType switch

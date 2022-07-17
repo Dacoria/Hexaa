@@ -24,7 +24,7 @@ public static class Direction
     };
 
     public static List<Vector3Int> GetDirectionsList(int z)
-    {
+    {        
         if (z % 2 == 0)
         {
             return directionsOffsetEven;
@@ -33,5 +33,6 @@ public static class Direction
         {
             return directionsOffsetOdd;
         }
+       
     }
 }

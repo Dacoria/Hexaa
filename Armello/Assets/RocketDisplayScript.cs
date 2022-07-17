@@ -7,6 +7,7 @@ using System.Collections;
 public class RocketDisplayScript : MonoBehaviour
 {
     public bool IsLookingForRocketTarget;
+    private bool isFiringRocket;
 
     private void Awake()
     {
@@ -16,12 +17,13 @@ public class RocketDisplayScript : MonoBehaviour
     public void RocketButtonClicked()
     {
         IsLookingForRocketTarget = !IsLookingForRocketTarget;
-        Textt.GameSync("Select tile");
+
+        Textt.GameSync(IsLookingForRocketTarget ? "Select tile" : "");
     }
 
     private void Update()
-    {
-        if (IsLookingForRocketTarget)
+    {       
+        if (IsLookingForRocketTarget && !isFiringRocket)
         {
             DetectMouseClick();
         }
@@ -56,9 +58,10 @@ public class RocketDisplayScript : MonoBehaviour
 
     private void FireRocketOnHighlightedTile()
     {
+        isFiringRocket = true;
         NetworkHelper.instance.GetMyPlayer().GetComponent<PlayerRocketHandler>().FireRocket(HighlightedHex);
-        Textt.GameSync("");
-        StartCoroutine(DisableHighlightInXSeconds(1f));        
+        Textt.GameSync("Firing!");
+        StartCoroutine(DisableHighlightInXSeconds(1.15f));        
     }
 
     private IEnumerator DisableHighlightInXSeconds(float seconds)
@@ -66,6 +69,7 @@ public class RocketDisplayScript : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         HighlightedHex.DisableHighlight();
         IsLookingForRocketTarget = false;
+        isFiringRocket = false;
     }
 
     private void HighlightTile(List<Hex> result)

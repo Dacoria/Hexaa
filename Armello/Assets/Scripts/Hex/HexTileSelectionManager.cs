@@ -9,7 +9,14 @@ public class HexTileSelectionManager : MonoBehaviour
     private List<Vector3Int> validNeighboursHightlighted = new List<Vector3Int>();
 
     private PlayerScript SelectedPlayer;
-    
+
+    public static HexTileSelectionManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     public void HandleMouseClick(Vector3 mousePosition)
     {
         if(!MonoHelper.instance.CanProcessTileHighlighting())
@@ -78,6 +85,7 @@ public class HexTileSelectionManager : MonoBehaviour
 
     private void DeselectHighlightedNeighbours()
     {
+        Debug.Log("DeselectHighlightedNeighbours");
         foreach (var neightbour in validNeighboursHightlighted)
         {
             HexGrid.GetTileAt(neightbour).DisableHighlight();
@@ -86,6 +94,7 @@ public class HexTileSelectionManager : MonoBehaviour
 
     private void HightlightValidNeighbourTiles(Hex selectedHex)
     {
+        Debug.Log("HightlightValidNeighbourTiles");
         var neighboursToTryToHightlight = HexGrid.GetNeighboursFor(selectedHex.HexCoordinates);
         validNeighboursHightlighted = new List<Vector3Int>();
 

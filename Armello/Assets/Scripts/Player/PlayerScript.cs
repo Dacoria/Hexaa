@@ -1,16 +1,22 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScript : MonoBehaviour
+public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 {
     public Hex CurrentHexTile;
+    public bool IsAi;
     private HexGrid HexGrid;
+    public int PlayerId;
+    public int SentServerTimestamp;
 
-    private void Start()
+    public string PlayerName;      
+
+    private void OnEnable()
     {
-        StartCoroutine(InitSetCurrentHexTile());        
+        StartCoroutine(InitSetCurrentHexTile());
     }
 
     private IEnumerator InitSetCurrentHexTile()
@@ -22,5 +28,27 @@ public class PlayerScript : MonoBehaviour
         CurrentHexTile = HexGrid.GetTileAt(tilePos);
 
         transform.position = CurrentHexTile.transform.position;
+    }
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        object[] instantiationData = info.photonView.InstantiationData;
+        var name = instantiationData[0].ToString();
+        IsAi = bool.Parse(instantiationData[1].ToString());
+        var hosterCounterId = int.Parse(instantiationData[2].ToString());
+        SentServerTimestamp = info.SentServerTimestamp;
+
+
+        if (PhotonNetwork.OfflineMode || IsAi)
+        {
+            PlayerId = hosterCounterId + 1000; // forceert dat het anders is dat het photonId
+        }
+        else
+        {
+            PlayerId = info.photonView.OwnerActorNr;
+        }
+        NetworkHelper.instance.RefreshPlayerGos();
+        PlayerName = name;
+        gameObject.SetActive(false);
     }
 }
