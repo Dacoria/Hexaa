@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class FogGrid : MonoBehaviour
 {
@@ -29,14 +30,14 @@ public class FogGrid : MonoBehaviour
     private void OnNewRoundStarted(List<PlayerScript> allPlayers, PlayerScript playersTurn)
     {
         // initiele setup --> daarna OnNewPlayerTurn voor de beurt updaten
-        UpdateVisibility(Netw.MyPlayer());
+        StartCoroutine(UpdateVisibility(Netw.MyPlayer()));
     }
 
     private void OnNewPlayerTurn(PlayerScript playersTurn)
     {
         if (playersTurn.IsOnMyNetwork())
         {
-            UpdateVisibility(playersTurn);
+            StartCoroutine(UpdateVisibility(playersTurn));
         }
     }       
 
@@ -44,15 +45,16 @@ public class FogGrid : MonoBehaviour
     {
         if(abilityType == AbilityType.Movement && player.IsOnMyNetwork())
         {
-            UpdateVisibility(player);
+            StartCoroutine(UpdateVisibility(player));
         }
     }
 
-    private void UpdateVisibility(PlayerScript player)
+    private IEnumerator UpdateVisibility(PlayerScript player)
     {
+        yield return new WaitForSeconds(0.1f); // wacht tijd wijzingen zijn verwerkt
         UpdateMyFog(player);
         UpdatePlayersVisibleInMyFog(player);
-    }   
+    }
 
     private void UpdateMyFog(PlayerScript player)
     {
@@ -71,7 +73,7 @@ public class FogGrid : MonoBehaviour
     {
         foreach (var player in GameHandler.instance.AllPlayers)
         {
-            var playerIsInFog = player.CurrentHexTile.GetComponent<FogHighlight>().isFogActive;
+            var playerIsInFog = player.CurrentHexTile.GetComponent<FogOnHex>().isFogActive;
             player.GetComponentInChildren<PlayerModel>(true).gameObject.SetActive(!playerIsInFog);
         }
     }

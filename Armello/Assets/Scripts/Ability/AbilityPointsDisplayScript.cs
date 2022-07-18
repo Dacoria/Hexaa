@@ -4,14 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
-public class ActionPointsDisplayScript : MonoBehaviour
+public class AbilityPointsDisplayScript : MonoBehaviour
 {
     [ComponentInject] private TMP_Text actionPointsText;
+    public Image BarFilled;
 
     private void Awake()
     {
         this.ComponentInject();
+        actionPointsText.text = "";
+        BarFilled.fillAmount = 0;
     }
 
     private void Start()
@@ -59,11 +63,16 @@ public class ActionPointsDisplayScript : MonoBehaviour
     {
         // zodat de waardes verwerkt kunnen worden
         yield return new WaitForSeconds(0.1f);
-        var a = player.PlayerName;
-        var b = player.GetComponent<PlayerAction>();
-        var c = player.GetComponent<PlayerAction>().GetPointsLeft();
-
-        actionPointsText.text = player.GetComponent<PlayerAction>().GetPointsLeft().ToString();
+        var playerAction = player.GetComponent<PlayerAbility>();
+        actionPointsText.text = playerAction.CurrentPlayerActionPoints + "/" + playerAction.ActionPointsLimit;
+        targetBarFilledAmount = playerAction.CurrentPlayerActionPoints / (float)playerAction.ActionPointsLimit;
     }
-    
+
+    private float targetBarFilledAmount;
+
+    private void Update()
+    {
+        BarFilled.fillAmount = Mathf.Lerp(BarFilled.fillAmount, targetBarFilledAmount, 2 * Time.deltaTime);
+    }
+
 }

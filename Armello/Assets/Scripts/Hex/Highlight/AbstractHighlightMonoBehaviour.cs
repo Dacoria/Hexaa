@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GlowHighlight : MonoBehaviour
+public abstract class AbstractHighlightMonoBehaviour : MonoBehaviour
 {
-    Dictionary<Renderer, Material[]> glowMaterialDict = new Dictionary<Renderer, Material[]>();
+    Dictionary<Renderer, Material[]> highlightMaterialDict = new Dictionary<Renderer, Material[]>();
     Dictionary<Renderer, Material[]> originalMaterialDict = new Dictionary<Renderer, Material[]>();
 
     Dictionary<Color, Material> cachedMaterialDict = new Dictionary<Color, Material>();
+    public abstract Material GetHighlightMaterial();
 
-    public Material glowMaterial;
 
-    public bool isGlowing = false;
+    public bool isHighlighted = false;
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class GlowHighlight : MonoBehaviour
                 Material mat = null;
                 if(!cachedMaterialDict.TryGetValue(originalMaterials[i].color, out mat))
                 {
-                    mat = new Material(glowMaterial);
+                    mat = new Material(GetHighlightMaterial());
 
                     mat.color = originalMaterials[i].color;
                     cachedMaterialDict[mat.color] = mat;
@@ -44,17 +44,17 @@ public class GlowHighlight : MonoBehaviour
                 newMaterials[i] = mat;
             }
 
-            glowMaterialDict.Add(renderer, newMaterials);
+            highlightMaterialDict.Add(renderer, newMaterials);
         }
     }
 
-    private void UpdateGlow()
+    private void UpdateHighlight()
     {
-        if (isGlowing)
+        if (isHighlighted)
         {
             foreach (var renderer in originalMaterialDict.Keys)
             {
-                renderer.materials = glowMaterialDict[renderer];
+                renderer.materials = highlightMaterialDict[renderer];
             }
         }
         else
@@ -66,20 +66,20 @@ public class GlowHighlight : MonoBehaviour
         }
     }
 
-    public void SetGlow(bool isGlowing)
+    public void SetHighlight(bool isHighlighted)
     {
-        this.isGlowing = isGlowing;
+        this.isHighlighted = isHighlighted;
     }
 
 
-    private bool oldGlow;
+    private bool previousIsHighlighted;
     private void Update()
     {
-        if (oldGlow != this.isGlowing)
+        if (previousIsHighlighted != this.isHighlighted)
         {
-            UpdateGlow();
+            UpdateHighlight();
         }
 
-        oldGlow = this.isGlowing;
+        previousIsHighlighted = this.isHighlighted;
     }
 }

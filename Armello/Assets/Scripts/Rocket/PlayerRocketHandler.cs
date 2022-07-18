@@ -16,11 +16,13 @@ public class PlayerRocketHandler : MonoBehaviour
     private void Start()
     {
         ActionEvents.PlayerAbility += OnPlayerAbility;
+        ActionEvents.PlayerRocketHitTile += OnPlayerRocketHitTile;
     }
 
     private void OnDestroy()
     {
         ActionEvents.PlayerAbility -= OnPlayerAbility;
+        ActionEvents.PlayerRocketHitTile -= OnPlayerRocketHitTile;
     }
 
     public void FireRocket(Hex hexTarget)
@@ -34,15 +36,22 @@ public class PlayerRocketHandler : MonoBehaviour
         {
             return;
         }
-
-        if (playerScript.IsAi)
+        if(playerScript != playerThatFiresRocket)
         {
-            return; // wordt al los afgevuurd door de echte speler
-        }
+            return;
+        }        
 
         Vector3 destination = hexTarget.transform.position + new Vector3(0, 15, 0);
         var rocketGo = Instantiate(RocketPrefab, destination, Quaternion.Euler(0, 0, 180f));
         rocketGo.Player = playerScript;
         rocketGo.HexTarget = hexTarget;
+    }
+
+    private void OnPlayerRocketHitTile(PlayerScript playerThatSendRocket, Hex hexHit, PlayerScript playerHit, bool hitPlayer)
+    {
+        if(playerScript == playerThatSendRocket)
+        {
+            hexHit.EnableHighlightHit();
+        }
     }
 }

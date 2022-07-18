@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FogHighlight : MonoBehaviour
+public class FogOnHex : MonoBehaviour
 {
     [ComponentInject] private ParticleSystem particleSystem;
 

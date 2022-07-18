@@ -13,6 +13,16 @@ public class PlayerMovement : MonoBehaviour
         this.ComponentInject();
     }
 
+    private void Start()
+    {
+        ActionEvents.PlayerAbility += OnPlayerAbility;
+    }
+
+    private void OnDestroy()
+    {
+        ActionEvents.PlayerAbility -= OnPlayerAbility;
+    }    
+
     public void DoMove(Hex selectedHex)
     {        
         NewHexTile = selectedHex;
@@ -25,9 +35,18 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void OnMovingFinished()
-    {
-        playerScript.CurrentHexTile = NewHexTile;
+    {        
         NetworkActionEvents.instance.PlayerAbility(playerScript, NewHexTile, AbilityType.Movement);
+    }
+
+    private void OnPlayerAbility(PlayerScript player, Hex hex, AbilityType type)
+    {
+        if(type == AbilityType.Movement)
+        {
+            // eigen speler --> geen verschil te zien. Netwerk speler: Update locatie. Sync!!!!
+            player.transform.position = hex.transform.position;
+            player.CurrentHexTile = hex;
+        }
     }
 
     private IEnumerator MoveToDestination(Vector3 endPosition, float duration, Action callbackOnFinished)

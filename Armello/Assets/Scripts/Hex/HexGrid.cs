@@ -37,7 +37,7 @@ public class HexGrid : MonoBehaviour
         return result;
     }
 
-    public List<Vector3Int> GetNeighboursForV2(Vector3Int hexCoordinates, int range)
+    public List<Vector3Int> GetNeighboursFor(Vector3Int hexCoordinates, int range)
     {
         var neighboursRange1 = GetNeighboursFor(hexCoordinates);     
 
@@ -72,50 +72,7 @@ public class HexGrid : MonoBehaviour
 
         return newUniqueList;
     }
-
-    // VERANDEREN DOOR GetNeighboursForV2???? testen todo
-    public List<Vector3Int> GetNeighboursFor(Vector3Int hexCoordinates, int range)
-    {
-        var range1 = GetNeighboursFor(hexCoordinates);
-        if(range <= 1)
-        {
-            return range1;
-        }
-
-        var secondUniqueList = new HashSet<Vector3Int>();
-        foreach (var neightbourRange in range1)
-        {
-            var neighboursOfNeighbor = GetNeighboursFor(neightbourRange, 1);
-            foreach(var neighbourOfNeighbor in neighboursOfNeighbor)
-            {
-                if (!range1.Any(x => x == neighbourOfNeighbor) && neighbourOfNeighbor != hexCoordinates)
-                {
-                    secondUniqueList.Add(neighbourOfNeighbor);
-                }
-            }
-        }
-
-        if (range <= 2)
-        {
-            return range1.Concat(secondUniqueList).ToList();
-        }
-
-        var thirdUniqueList = new HashSet<Vector3Int>();
-        foreach (var neightbourRange in secondUniqueList)
-        {
-            var neighboursOfNeighbor2 = GetNeighboursFor(neightbourRange, 1);
-            foreach (var neighbourOfNeighbor in neighboursOfNeighbor2)
-            {
-                if (!secondUniqueList.Any(x => x == neighbourOfNeighbor) && !range1.Any(x => x == neighbourOfNeighbor) && neighbourOfNeighbor != hexCoordinates)
-                {
-                    thirdUniqueList.Add(neighbourOfNeighbor);
-                }
-            }
-        }
-
-        return range1.Concat(secondUniqueList).Concat(thirdUniqueList).ToList();
-    }
-
+    
     public bool IsLoaded()
     {
         return GetAllTiles().Count > 50;

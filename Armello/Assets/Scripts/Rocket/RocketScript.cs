@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 
 public class RocketScript : MonoBehaviour
@@ -12,6 +13,7 @@ public class RocketScript : MonoBehaviour
     {
         endposition = transform.position + new Vector3(0, -100, 0);
     }
+   
     void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, endposition, 4 * Time.deltaTime);
@@ -36,7 +38,7 @@ public class RocketScript : MonoBehaviour
 
     private void PlayerRocketHitTile(PlayerScript playerWhoShotRocket, Hex hexTileHit)
     {
-        if(!Netw.IsMyTurn())
+        if(!Netw.IsMyNetwTurn())
         {
             // logica bij curr player
             return;

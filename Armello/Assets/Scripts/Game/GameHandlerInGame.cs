@@ -10,7 +10,6 @@ public partial class GameHandler : MonoBehaviour
     public void PlayerEndsTurn(PlayerScript myPlayer)
     {
         NextTurn();
-        ActionEvents.NewPlayerTurn(CurrentPlayer);
     }
 
     private void NextTurn()

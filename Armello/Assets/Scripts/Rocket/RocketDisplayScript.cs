@@ -9,13 +9,9 @@ public class RocketDisplayScript : MonoBehaviour
 {
     public bool IsLookingForRocketTarget;
     private bool isFiringRocket;
-
-    [ComponentInject] public Button Button;
-
     private void Awake()
     {
         IsLookingForRocketTarget = false;
-        this.ComponentInject();
     }
 
     public void RocketButtonClicked()
@@ -71,7 +67,7 @@ public class RocketDisplayScript : MonoBehaviour
     private IEnumerator DisableHighlightInXSeconds(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        HighlightedHex.DisableHighlight();
+        HighlightedHex.DisableHighlightMove();
         IsLookingForRocketTarget = false;
         isFiringRocket = false;
     }
@@ -80,9 +76,9 @@ public class RocketDisplayScript : MonoBehaviour
     {
         if (HighlightedHex != null)
         {
-            HighlightedHex.DisableHighlight();
+            HighlightedHex.DisableHighlightMove();
         }
         HighlightedHex = result.First();
-        HighlightedHex.EnableHighlight();
+        HighlightedHex.EnableHighlightMove();
     }
 }

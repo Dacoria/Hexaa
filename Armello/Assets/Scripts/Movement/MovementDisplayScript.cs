@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class MovementDisplayScript : MonoBehaviour
 {
-    [ComponentInject] public Button Button;
-
     private void Awake()
     {
         this.ComponentInject();

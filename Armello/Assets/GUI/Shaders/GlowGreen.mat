@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_GlowShader
+  m_Name: GlowGreen
   m_Shader: {fileID: -6465566751694194690, guid: 06ad9bd961524714d8abaac931ac021f, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -52,6 +52,6 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0}
-    - _GlowColor: {r: 4.937271, g: 4.937271, b: 4.937271, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _GlowColor: {r: 0.19174762, g: 0.7075472, b: 0.1768868, a: 1}
   m_BuildTextureStacks: []

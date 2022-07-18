@@ -21,7 +21,7 @@ public class HexTileSelectionManager : MonoBehaviour
         HightlightValidNeighbourTiles(player.CurrentHexTile);
     }
 
-    public void HandleMouseClick(Vector3 mousePosition)
+    public void HandleMouseClickForMove(Vector3 mousePosition)
     {
         List<Hex> selectedHexes;
         if (MonoHelper.instance.FindTile(mousePosition, out selectedHexes))
@@ -34,11 +34,8 @@ public class HexTileSelectionManager : MonoBehaviour
         }
        
         DeselectHighlightedNeighbours(); // niks meer highlighten bij een klik
-        SelectedPlayer = null;
-        
-    }
-
-   
+        SelectedPlayer = null;        
+    }   
 
     private void TryPlayerMoveAction(List<Hex> selectedHexTiles)
     {
@@ -65,7 +62,7 @@ public class HexTileSelectionManager : MonoBehaviour
     {
         foreach (var neightbour in validNeighboursHightlighted)
         {
-            HexGrid.GetTileAt(neightbour).DisableHighlight();
+            HexGrid.GetTileAt(neightbour).DisableHighlightMove();
         }
     }
 
@@ -80,7 +77,7 @@ public class HexTileSelectionManager : MonoBehaviour
             if(!tile.HexType.In(HexType.Water, HexType.Obstacle))
             {
                 validNeighboursHightlighted.Add(neightbour);
-                HexGrid.GetTileAt(neightbour).EnableHighlight();
+                HexGrid.GetTileAt(neightbour).EnableHighlightMove();
             }
         }
     }    

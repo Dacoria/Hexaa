@@ -23,17 +23,7 @@ public class GameTextManager : MonoBehaviour
 
         if (playerOfRocket.IsOnMyNetwork())
         {
-            var otherPlayer = NetworkHelper.instance.OtherPlayerClosest(playerOfRocket, hex.transform.position);
-            var distance = Vector3.Distance(otherPlayer.transform.position, hex.transform.position);
-
-            var min = Mathf.Max(1, distance - 2);
-            var max = distance + 2;
-
-            var randomDist = (int)UnityEngine.Random.Range(min, max);
-            Textt.GameLocal("Missed! Distance offset indication (+-2): " + randomDist);
-
-
-
+            Textt.GameLocal("Missed!");
         }
         else
         {
@@ -76,15 +66,17 @@ public class GameTextManager : MonoBehaviour
     private void OnPlayerAbility(PlayerScript player, Hex hex, AbilityType type)
     {
         if (GameHandler.instance.GameEnded) { return; }
-        if (type == AbilityType.Movement)
+
+        if(type == AbilityType.Radar)
         {
-            if(!player.IsOnMyNetwork())
-            {
-                Textt.GameLocal(player.PlayerName + " has moved...");
-            }
+            Textt.GameSync("Radar shows options for player location (not the middle)");
+        }
+        else if (type == AbilityType.Vision)
+        {
+            Textt.GameSync(GameHandler.instance.CurrentPlayer.PlayerName + " is watching tile...");
         }
 
-        // meer nodig?
+        // iets? nodig?
     }
 
     private void OnDestroy()

@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class ButtonUpdater : MonoBehaviour
 {
-    [ComponentInject] private RocketDisplayScript RocketDisplayScript;
-    [ComponentInject] private MovementDisplayScript MovementDisplayScript;
     [ComponentInject] private EndTurnButtonScript EndTurnButtonScript;
+    private List<AbilityCostDisplay> abilityScripts;
 
     private void Awake()
     {
         this.ComponentInject();
+        abilityScripts = GetComponentsInChildren<AbilityCostDisplay>().ToList();
     }
 
     private void Start()
@@ -21,12 +21,21 @@ public class ButtonUpdater : MonoBehaviour
         ActionEvents.NewRoundStarted += OnNewRoundStarted;
         ActionEvents.PlayerAbility += OnPlayerAbility;
         ActionEvents.RoundEnded += OnRoundEnded;
+        DisableAllButtons();
     }
 
     private void OnRoundEnded(bool reachedMiddle)
     {
-        MovementDisplayScript.Button.interactable = false;
-        RocketDisplayScript.Button.interactable = false;
+        DisableAllButtons();
+    }
+
+    private void DisableAllButtons()
+    {
+        foreach (var abilityScript in abilityScripts)
+        {
+            abilityScript.Button.interactable = false;
+        }
+
         EndTurnButtonScript.Button.interactable = false;
     }
 
@@ -42,29 +51,40 @@ public class ButtonUpdater : MonoBehaviour
 
         if (player.IsOnMyNetwork())
         {
-            var playerAction = player.GetComponent<PlayerAction>();
-            var pointsLeft = playerAction.GetPointsLeft();
+            var playerAction = player.GetComponent<PlayerAbility>();
+            var pointsLeft = playerAction.CurrentPlayerActionPoints;
 
-            MovementDisplayScript.Button.interactable = AbilityType.Movement.Cost() <= pointsLeft;
-            RocketDisplayScript.Button.interactable = AbilityType.Rocket.Cost() <= pointsLeft;
+            foreach (var abilityScript in abilityScripts)
+            {
+                abilityScript.Button.interactable = abilityScript.type.Cost() <= pointsLeft;
+            }
         }
     }
 
     private void OnNewRoundStarted(List<PlayerScript> arg1, PlayerScript currentPlayer)
     {
         CheckEnableButtonsNewTurn(currentPlayer);
+        abilityScripts.First(x => x.type == AbilityType.Rocket).Button.interactable = false; // geen rocket in turn 1
     }
 
     private void OnNewPlayerTurn(PlayerScript currentPlayer)
     {
         CheckEnableButtonsNewTurn(currentPlayer);
+        if(currentPlayer.GetComponent<PlayerTurnCount>().TurnCount <= 1)
+        {
+            abilityScripts.First(x => x.type == AbilityType.Rocket).Button.interactable = false; // geen rocket in turn 1
+        }
     }
 
     private void CheckEnableButtonsNewTurn(PlayerScript currentPlayer)
     {
         if (GameHandler.instance.GameEnded) { return; }
-        MovementDisplayScript.Button.interactable = currentPlayer.IsOnMyNetwork();
-        RocketDisplayScript.Button.interactable = currentPlayer.IsOnMyNetwork();
+
+        foreach (var abilityScript in abilityScripts)
+        {
+            abilityScript.Button.interactable = currentPlayer.IsOnMyNetwork();
+        }
+
         EndTurnButtonScript.Button.interactable = currentPlayer.IsOnMyNetwork();
     }
 

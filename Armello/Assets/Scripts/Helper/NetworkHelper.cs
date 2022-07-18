@@ -45,11 +45,16 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
         }
     }
 
+    public PlayerScript OtherPlayerClosest(PlayerScript me)
+    {
+        return OtherPlayerClosest(me, me.transform.position);
+    }
+
     public PlayerScript OtherPlayerClosest(PlayerScript me, Vector3 positionToCompareDistance)
     {
         return AllPlayers.Where(x => x != me)
             .OrderBy(x => Vector3.Distance(x.transform.position, positionToCompareDistance))
-            .First();
+            .FirstOrDefault();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)

@@ -38,7 +38,7 @@ public class PlayerInput : MonoBehaviour
             }
 
 
-            HexTileSelectionManager.instance.HandleMouseClick(Input.mousePosition);
+            HexTileSelectionManager.instance.HandleMouseClickForMove(Input.mousePosition);
         }
     }
 }
