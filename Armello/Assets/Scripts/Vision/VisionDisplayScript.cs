@@ -77,7 +77,8 @@ public class VisionDisplayScript : MonoBehaviour
 
     private void OnPlayerAbility(PlayerScript playerDoingAbility, Hex target, AbilityType type)
     {
-        if(type == AbilityType.Vision)
+        isLookingForVisionTarget = false;
+        if (type == AbilityType.Vision)
         {
             target.EnableHighlightVision();
 

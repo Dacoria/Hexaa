@@ -78,6 +78,7 @@ public class RocketDisplayScript : MonoBehaviour
         {
             HighlightedHex.DisableHighlightMove();
         }
+
         HighlightedHex = result.First();
         HighlightedHex.EnableHighlightMove();
     }

@@ -29,7 +29,7 @@ public class MonoHelper : MonoBehaviour
                 .Select(x => x.collider.gameObject.GetComponent<Hex>())
                 .ToList();
 
-            return true;
+            return result.Any();
         }
 
         result = null;
