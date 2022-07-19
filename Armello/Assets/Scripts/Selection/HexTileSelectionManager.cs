@@ -34,7 +34,6 @@ public class HexTileSelectionManager : MonoBehaviour
         }
        
         DeselectHighlightedNeighbours(); // niks meer highlighten bij een klik
-        SelectedPlayer = null;        
     }   
 
     private void TryPlayerMoveAction(List<Hex> selectedHexTiles)
@@ -55,15 +54,15 @@ public class HexTileSelectionManager : MonoBehaviour
         }
 
         DeselectHighlightedNeighbours(); // niks meer highlighten bij een klik
-        SelectedPlayer = null;
     }
 
-    private void DeselectHighlightedNeighbours()
+    public void DeselectHighlightedNeighbours()
     {
         foreach (var neightbour in validNeighboursHightlighted)
         {
             HexGrid.GetTileAt(neightbour).DisableHighlightMove();
         }
+        SelectedPlayer = null;
     }
 
     private void HightlightValidNeighbourTiles(Hex selectedHex)

@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class VisionDisplayScript : MonoBehaviour
+public class VisionDisplayScript : MonoBehaviour, IDeselectHandler
 {
     private void Start()
     {
@@ -22,6 +23,7 @@ public class VisionDisplayScript : MonoBehaviour
     public void OnVisionButtonClick()
     {
         isLookingForVisionTarget = true;
+        Textt.GameLocal("Select a tile for a Vision target");
     }
 
     private void Update()
@@ -67,6 +69,8 @@ public class VisionDisplayScript : MonoBehaviour
         }
         HighlightedHex = selectedTiles.First();
         HighlightedHex.EnableHighlightMove();
+
+        Textt.GameLocal("Reselect tile to get vision on that tile");
     }
 
     private void ShowVisionOfTile()
@@ -89,6 +93,14 @@ public class VisionDisplayScript : MonoBehaviour
                     player.GetComponentInChildren<PlayerModel>(true).gameObject.SetActive(true);
                 }              
             }            
+        }
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        if (HighlightedHex != null && HighlightedHex.AbilityHighlight != AbilityType.Vision)
+        {
+            HighlightedHex.DisableHighlightMove();
         }
     }
 }

@@ -12,6 +12,9 @@ public class Hex : MonoBehaviour
     [ComponentInject] private HighlightHexVision highlighVision;
 
     [ComponentInject] private FogOnHex fogHighlight;
+
+    public AbilityType AbilityHighlight;
+
     public Vector3Int HexCoordinates => hexCoordinates.offSetCooridnates;
 
     public HexType HexType;

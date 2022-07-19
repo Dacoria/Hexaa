@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -36,7 +37,7 @@ public static class Utils
             var valueToInject = getValueToInject(propertyType, componentInject, monoBehaviour);
             injectableProperty.SetValue(monoBehaviour, valueToInject);
         }
-    }    
+    }
 
     private static object getValueToInject(Type type, ComponentInject componentInject, MonoBehaviour monoBehaviour)
     {
@@ -129,5 +130,28 @@ public static class Utils
             }
             return component;
         }
-    }    
+    }
+
+    public static T[] GetComponentsOnlyInChildren<T>(this MonoBehaviour script) where T : class
+    {
+        List<T> group = new List<T>();
+
+        //collect only if its an interface or a Component
+        if (typeof(T).IsInterface
+         || typeof(T).IsSubclassOf(typeof(Component))
+         || typeof(T) == typeof(Component))
+        {
+            foreach (Transform child in script.transform)
+            {
+                group.AddRange(child.GetComponentsInChildren<T>());
+            }
+        }
+
+        return group.ToArray();
+    }
+
+    public static T GetComponentOnlyInDirectChildren<T>(this MonoBehaviour script) where T : class
+    {
+        return script.GetComponentsOnlyInChildren<T>().FirstOrDefault();
+    }
 }

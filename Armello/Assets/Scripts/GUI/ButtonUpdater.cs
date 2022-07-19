@@ -7,12 +7,12 @@ using UnityEngine;
 public class ButtonUpdater : MonoBehaviour
 {
     [ComponentInject] private EndTurnButtonScript EndTurnButtonScript;
-    private List<AbilityCostDisplay> abilityScripts;
+    private List<AbilityDisplay> abilityScripts;
 
     private void Awake()
     {
         this.ComponentInject();
-        abilityScripts = GetComponentsInChildren<AbilityCostDisplay>().ToList();
+        abilityScripts = GetComponentsInChildren<AbilityDisplay>().ToList();
     }
 
     private void Start()
@@ -57,6 +57,7 @@ public class ButtonUpdater : MonoBehaviour
             foreach (var abilityScript in abilityScripts)
             {
                 abilityScript.Button.interactable = abilityScript.type.Cost() <= pointsLeft;
+                abilityScript.UnselectAbility();
             }
         }
     }
@@ -65,6 +66,11 @@ public class ButtonUpdater : MonoBehaviour
     {
         CheckEnableButtonsNewTurn(currentPlayer);
         abilityScripts.First(x => x.type == AbilityType.Rocket).Button.interactable = false; // geen rocket in turn 1
+    }
+
+    public void OnAbilityButtonClick()
+    {
+        abilityScripts.ForEach(x => x.UnselectAbility());
     }
 
     private void OnNewPlayerTurn(PlayerScript currentPlayer)
@@ -83,6 +89,7 @@ public class ButtonUpdater : MonoBehaviour
         foreach (var abilityScript in abilityScripts)
         {
             abilityScript.Button.interactable = currentPlayer.IsOnMyNetwork();
+            abilityScript.UnselectAbility();
         }
 
         EndTurnButtonScript.Button.interactable = currentPlayer.IsOnMyNetwork();

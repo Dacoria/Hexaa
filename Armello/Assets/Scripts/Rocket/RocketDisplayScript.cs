@@ -4,8 +4,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class RocketDisplayScript : MonoBehaviour
+public class RocketDisplayScript : MonoBehaviour, IDeselectHandler
 {
     public bool IsLookingForRocketTarget;
     private bool isFiringRocket;
@@ -16,9 +17,8 @@ public class RocketDisplayScript : MonoBehaviour
 
     public void RocketButtonClicked()
     {
-        IsLookingForRocketTarget = !IsLookingForRocketTarget;
-
-        Textt.GameSync(IsLookingForRocketTarget ? "Select tile" : "");
+        IsLookingForRocketTarget = true;
+        Textt.GameLocal("Select a tile to fire your rocket");
     }
 
     private void Update()
@@ -81,5 +81,13 @@ public class RocketDisplayScript : MonoBehaviour
 
         HighlightedHex = result.First();
         HighlightedHex.EnableHighlightMove();
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        if(HighlightedHex != null)
+        {
+            HighlightedHex.DisableHighlightHit();
+        }
     }
 }
