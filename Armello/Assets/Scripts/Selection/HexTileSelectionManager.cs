@@ -46,11 +46,11 @@ public class HexTileSelectionManager : MonoBehaviour
         }
         else if(validNeighboursClicked.Count > 1)
         {
-            Debug.Log("MULTIPLE RESULTS; DO NOTHING");
+            //Debug.Log("MULTIPLE RESULTS; DO NOTHING");
         }
         else
         {
-            Debug.Log("CANNOT DO MOVE");
+            //Debug.Log("CANNOT DO MOVE");
         }
 
         DeselectHighlightedNeighbours(); // niks meer highlighten bij een klik
