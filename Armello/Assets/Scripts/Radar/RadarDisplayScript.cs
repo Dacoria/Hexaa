@@ -67,7 +67,7 @@ public class RadarDisplayScript : MonoBehaviour, IAbilityAction
         var allTiles = HexGrid.instance.GetAllTiles();
         foreach (var tile in allTiles)
         {
-            tile.DisableHighlight();
+            tile.DisableHighlight(HighlightColorType.Blue);
         }
     }
 
