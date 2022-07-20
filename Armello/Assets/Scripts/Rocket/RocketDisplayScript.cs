@@ -12,6 +12,7 @@ public class RocketDisplayScript : MonoBehaviour, IAbilityAction
 
     public void InitAbilityAction()
     {
+        Utils.Destroy(GetComponents<HighlightOneTileDisplayScript>());
         Textt.GameLocal("Select a tile to fire your rocket");
         var highlightOneTileSelection = gameObject.AddComponent<HighlightOneTileDisplayScript>();
         highlightOneTileSelection.CallbackOnTileSelection = OnTileSelection;
@@ -33,10 +34,6 @@ public class RocketDisplayScript : MonoBehaviour, IAbilityAction
 
     public void DeselectAbility()
     {
-        if (highlightOneTileDisplayScript != null)
-        {
-            highlightOneTileDisplayScript.DisableHighlight();
-        }
-        Destroy(highlightOneTileDisplayScript);
+        Utils.Destroy(GetComponents<HighlightOneTileDisplayScript>());
     }
 }

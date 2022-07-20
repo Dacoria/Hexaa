@@ -154,4 +154,12 @@ public static class Utils
     {
         return script.GetComponentsOnlyInChildren<T>().FirstOrDefault();
     }
+
+    public static void Destroy(IEnumerable<MonoBehaviour> monos)
+    {
+        foreach(var mono in monos)
+        {
+            GameObject.Destroy(mono);
+        }
+    }
 }

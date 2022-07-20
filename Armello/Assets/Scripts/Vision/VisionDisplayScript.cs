@@ -21,7 +21,8 @@ public class VisionDisplayScript : MonoBehaviour, IAbilityAction
     private HighlightOneTileDisplayScript highlightOneTileDisplayScript;
 
     public void InitAbilityAction()
-    {        
+    {
+        Utils.Destroy(GetComponents<HighlightOneTileDisplayScript>());
         Textt.GameLocal("Select a tile for a Vision target");
         var highlightOneTileSelection = gameObject.AddComponent<HighlightOneTileDisplayScript>();
         highlightOneTileSelection.CallbackOnTileSelection = OnTileSelection;
@@ -58,10 +59,6 @@ public class VisionDisplayScript : MonoBehaviour, IAbilityAction
 
     public void DeselectAbility()
     {
-        if(highlightOneTileDisplayScript != null)
-        {
-            highlightOneTileDisplayScript.DisableHighlight();
-        }
-        Destroy(highlightOneTileDisplayScript);
+        Utils.Destroy(GetComponents<HighlightOneTileDisplayScript>());
     }
 }

@@ -77,7 +77,14 @@ public class HighlightHexScript : MonoBehaviour
 
     public void SetHighlight(bool isHighlighted, HighlightColorType? colorType)
     {
-        this.CurrentColorHighlight = colorType;
+        if(isHighlighted)
+        {
+            this.CurrentColorHighlight = colorType.Value;
+        }
+        else
+        {
+            this.CurrentColorHighlight = null;
+        }        
     }
 
 

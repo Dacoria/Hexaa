@@ -27,9 +27,9 @@ public class Hex : MonoBehaviour
     public void DisableHighlight() => highlightMove.SetHighlight(false, null);
     public void DisableHighlight(HighlightColorType type)
     {
-        if(highlightMove.CurrentColorHighlight == type)
+        if(highlightMove.CurrentColorHighlight.HasValue && highlightMove.CurrentColorHighlight.Value == type)
         {
-            DisableHighlight(type);
+            highlightMove.SetHighlight(false, null);
         }
     }
 

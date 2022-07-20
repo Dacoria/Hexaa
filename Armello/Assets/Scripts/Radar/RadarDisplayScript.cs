@@ -22,6 +22,7 @@ public class RadarDisplayScript : MonoBehaviour, IAbilityAction
     public void InitAbilityAction()
     {
         Textt.GameLocal("Select a tile to start radar");
+        Utils.Destroy(GetComponents<HighlightOneTileDisplayScript>());
         var highlightOneTileSelection = gameObject.AddComponent<HighlightOneTileDisplayScript>();
         highlightOneTileSelection.CallbackOnTileSelection = OnTileSelection;
         highlightOneTileSelection.CallbackOnTileSelectionConfirmed = OnTileSelectionConfirmed;
@@ -72,10 +73,6 @@ public class RadarDisplayScript : MonoBehaviour, IAbilityAction
 
     public void DeselectAbility()
     {
-        if (highlightOneTileDisplayScript != null)
-        {
-            highlightOneTileDisplayScript.DisableHighlight();
-        }
-        Destroy(highlightOneTileDisplayScript);
+        Utils.Destroy(GetComponents<HighlightOneTileDisplayScript>());
     }
 }
