@@ -7,6 +7,14 @@ public class SpawnPlayers : MonoBehaviour
 {
     public GameObject PlayerPrefab;
     public bool SpawnDummyPlayerOnStart;
+
+    public static SpawnPlayers instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         SpawnPlayer("P" + GetPlayerCounter(), false);

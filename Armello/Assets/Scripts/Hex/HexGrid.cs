@@ -19,9 +19,18 @@ public class HexGrid : MonoBehaviour
 
     private void Start()
     {
-        foreach(var hex in FindObjectsOfType<Hex>())
+        var counter = 0;
+
+        var hexes = FindObjectsOfType<Hex>();
+        var hexesSorted = hexes.OrderBy(x => Vector3.Distance(x.transform.position, new Vector3(0,0,0))).ToList();
+
+        foreach (var hex in hexesSorted)
         {
             hexTileDict[hex.HexCoordinates] = hex;
+            var lerp = hex.gameObject.AddComponent<LerpMovement>();
+            //StartCoroutine(lerp.MoveToDestination(hex.transform.position + new Vector3(0, -20, 0), hex.transform.position, duration: 2, delayedStart: counter * 0.03f));
+            StartCoroutine(lerp.MoveToDestination(hex.transform.position + new Vector3(0, -100, 0), hex.transform.position, duration: 1.5f, delayedStart: hex.transform.position.x * 0.15f));
+            counter++;
         }
     }
 

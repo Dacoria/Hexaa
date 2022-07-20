@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class MonoHelper : MonoBehaviour
 {
     public static MonoHelper instance;
-    public RocketDisplayScript RocketDisplayScript;
 
     private void Awake()
     {
@@ -17,6 +16,8 @@ public class MonoHelper : MonoBehaviour
     }
 
     public List<ColorHighlightMaterial> ColorHighlightMaterials;
+
+    public AnimationCurve CurveGradual;
 
     public bool FindTile(Vector3 mousePosition, out List<Hex> result)
     {

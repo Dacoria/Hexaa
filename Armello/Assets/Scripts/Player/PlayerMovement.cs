@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnRotationFinished()
     {
-        StartCoroutine(MoveToDestination(NewHexTile.transform.position, 1, OnMovingFinished));
+        StartCoroutine(MoveToDestination(NewHexTile.transform.position, duration: 1, callbackOnFinished: OnMovingFinished));
     }
 
     private void OnMovingFinished()
@@ -49,8 +49,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveToDestination(Vector3 endPosition, float duration, Action callbackOnFinished)
+    private IEnumerator MoveToDestination(Vector3 endPosition, float duration, float delayedStart = 0, Action callbackOnFinished = null)
     {
+        yield return new WaitForSeconds(delayedStart);
+
         float elapsedTime = 0f;
         var startPosition = transform.position;
 
@@ -62,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        callbackOnFinished();
+        callbackOnFinished?.Invoke();
     }
 
     private float previousAngleDiff;

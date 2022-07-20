@@ -22,6 +22,19 @@ public class ButtonEvents : MonoBehaviour
         ActionEvents.PlayerAbility += OnPlayerAbility;
         ActionEvents.RoundEnded += OnRoundEnded;
         UpdateAllAbilities(setToUnselected: true, interactable: false);
+        UpdateEndTurnButton(visible: false, interactable: false);
+    }
+
+    private void UpdateEndTurnButton(bool? visible = null, bool ? interactable = null)
+    {
+        if (visible.HasValue)
+        {
+            endTurnButtonScript.GetComponent<CanvasGroup>().alpha = visible.Value ? 1 : 0;
+        }
+        if (interactable.HasValue)
+        {
+            endTurnButtonScript.Button.interactable = interactable.Value;
+        }
     }
 
     private void Update()
@@ -35,6 +48,7 @@ public class ButtonEvents : MonoBehaviour
     private void OnRoundEnded(bool reachedMiddle)
     {
         UpdateAllAbilities(setToUnselected: true, interactable: false);
+        UpdateEndTurnButton(interactable: false);
     }    
 
     private void OnPlayerAbility(PlayerScript player, Hex hex, AbilityType type)
@@ -90,7 +104,7 @@ public class ButtonEvents : MonoBehaviour
     {
         if (GameHandler.instance.GameEnded) { return; }
         UpdateAllAbilities(interactable: currentPlayer.IsOnMyNetwork(), setToUnselected: true);
-        endTurnButtonScript.Button.interactable = currentPlayer.IsOnMyNetwork();
+        UpdateEndTurnButton(visible: true, interactable: currentPlayer.IsOnMyNetwork());
     }
 
     private void OnDestroy()

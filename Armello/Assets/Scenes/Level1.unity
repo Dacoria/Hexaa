@@ -6673,6 +6673,7 @@ GameObject:
   - component: {fileID: 697568289}
   - component: {fileID: 697568288}
   - component: {fileID: 697568291}
+  - component: {fileID: 697568292}
   m_Layer: 5
   m_Name: EndTurnButton
   m_TagString: Untagged
@@ -6808,6 +6809,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Button: {fileID: 0}
+--- !u!225 &697568292
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697568286}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -7845,6 +7858,7 @@ GameObject:
   - component: {fileID: 783315166}
   - component: {fileID: 783315165}
   - component: {fileID: 783315164}
+  - component: {fileID: 783315167}
   m_Layer: 5
   m_Name: SpawnDummy
   m_TagString: Untagged
@@ -7917,9 +7931,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 851644575}
-        m_TargetAssemblyTypeName: SpawnPlayers, Assembly-CSharp
-        m_MethodName: SpawnDummyPlayer
+      - m_Target: {fileID: 783315167}
+        m_TargetAssemblyTypeName: SpawnPlayerScript, Assembly-CSharp
+        m_MethodName: OnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7967,6 +7981,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 783315162}
   m_CullTransparentMesh: 1
+--- !u!114 &783315167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783315162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e44dbfe8ce54e04989c0ac31c38ebf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &793989121
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8316,6 +8342,7 @@ GameObject:
   - component: {fileID: 851644577}
   - component: {fileID: 851644578}
   - component: {fileID: 851644579}
+  - component: {fileID: 851644580}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -8350,7 +8377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 311cc533d0c233141929abafc615a9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RocketDisplayScript: {fileID: 1522167456}
   ColorHighlightMaterials:
   - ColorType: 3
     Material: {fileID: 2100000, guid: 9df908fe564562043b121790a005af8e, type: 2}
@@ -8362,6 +8388,30 @@ MonoBehaviour:
     Material: {fileID: 2100000, guid: 84013f51bbff94b46b346f26ce144f21, type: 2}
   - ColorType: 4
     Material: {fileID: 2100000, guid: 83f0bf0325618f845bbbd365cdf6aa6c, type: 2}
+  CurveGradual:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &851644572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8464,6 +8514,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VictoryHex: {fileID: 1453660461}
+--- !u!114 &851644580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 851644569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e392b41909c237d40b569d0599dc52b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &885690203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16000,7 +16062,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62cddbc0ccfe20d40912f80f6aebb7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsLookingForRocketTarget: 0
 --- !u!114 &1522167457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21193,6 +21254,7 @@ GameObject:
   - component: {fileID: 2096692967}
   - component: {fileID: 2096692966}
   - component: {fileID: 2096692965}
+  - component: {fileID: 2096692968}
   m_Layer: 5
   m_Name: ResetButton
   m_TagString: Untagged
@@ -21265,9 +21327,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 851644573}
-        m_TargetAssemblyTypeName: GameHandler, Assembly-CSharp
-        m_MethodName: ResetGame
+      - m_Target: {fileID: 2096692968}
+        m_TargetAssemblyTypeName: StartGameButtonScript, Assembly-CSharp
+        m_MethodName: OnButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21315,6 +21377,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2096692963}
   m_CullTransparentMesh: 1
+--- !u!114 &2096692968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096692963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 334099c239b4fcc419f29a5e1593924a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2101273841
 PrefabInstance:
   m_ObjectHideFlags: 0

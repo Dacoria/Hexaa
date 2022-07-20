@@ -162,4 +162,14 @@ public static class Utils
             GameObject.Destroy(mono);
         }
     }
+
+    public static List<GameObject> SortByDistance(this List<GameObject> objects, Vector3 mesureFrom)
+    {
+        return objects.OrderBy(x => Vector3.Distance(x.transform.position, mesureFrom)).ToList();
+    }
+
+    public static List<MonoBehaviour> SortByDistance(this List<MonoBehaviour> objects, Vector3 mesureFrom)
+    {
+        return objects.OrderBy(x => Vector3.Distance(x.transform.position, mesureFrom)).ToList();
+    }
 }
