@@ -51,7 +51,7 @@ public class PlayerRocketHandler : MonoBehaviour
     {
         if(playerScript == playerThatSendRocket)
         {
-            hexHit.EnableHighlightHit();
+            hexHit.EnableHighlight(HighlightColorType.Pink);
         }
     }
 }

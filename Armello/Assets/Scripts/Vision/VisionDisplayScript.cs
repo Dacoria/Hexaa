@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class VisionDisplayScript : MonoBehaviour, IDeselectHandler
+public class VisionDisplayScript : MonoBehaviour, IAbilityAction
 {
     private void Start()
     {
@@ -16,75 +16,35 @@ public class VisionDisplayScript : MonoBehaviour, IDeselectHandler
     private void OnDestroy()
     {
         ActionEvents.PlayerAbility -= OnPlayerAbility;
-    }    
+    }
 
-    private bool isLookingForVisionTarget;
+    private HighlightOneTileDisplayScript highlightOneTileDisplayScript;
 
-    public void OnVisionButtonClick()
-    {
-        isLookingForVisionTarget = true;
+    public void InitAbilityAction()
+    {        
         Textt.GameLocal("Select a tile for a Vision target");
+        var highlightOneTileSelection = gameObject.AddComponent<HighlightOneTileDisplayScript>();
+        highlightOneTileSelection.CallbackOnTileSelection = OnTileSelection;
+        highlightOneTileSelection.CallbackOnTileSelectionConfirmed = OnTileSelectionConfirmed;
     }
 
-    private void Update()
+    private void OnTileSelection(Hex hex)
     {
-        if (isLookingForVisionTarget)
-        {
-            DetectMouseClick();
-        }
-    }
-
-    private void DetectMouseClick()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 mousePos = Input.mousePosition;
-            TryHandleVisionTileSelection(mousePos);
-        }
-    }
-
-    private Hex HighlightedHex;
-
-    private void TryHandleVisionTileSelection(Vector3 mousePos)
-    {
-        List<Hex> selectedTiles;
-        if (MonoHelper.instance.FindTile(mousePos, out selectedTiles))
-        {
-            if (HighlightedHex != null && HighlightedHex == selectedTiles.First())
-            {
-                ShowVisionOfTile();
-            }
-            else
-            {
-                HighlightTile(selectedTiles);
-            }
-        }
-    }
-
-    private void HighlightTile(List<Hex> selectedTiles)
-    {
-        if (HighlightedHex != null)
-        {
-            HighlightedHex.DisableHighlightMove();
-        }
-        HighlightedHex = selectedTiles.First();
-        HighlightedHex.EnableHighlightMove();
-
         Textt.GameLocal("Reselect tile to get vision on that tile");
     }
 
-    private void ShowVisionOfTile()
-    {
-        HighlightedHex.SetFogHighlight(false); // local!
-        NetworkActionEvents.instance.PlayerAbility(GameHandler.instance.CurrentPlayer, HighlightedHex, AbilityType.Vision);
+    private void OnTileSelectionConfirmed(Hex hex)
+    {   
+        hex.SetFogHighlight(false); // local!
+        NetworkActionEvents.instance.PlayerAbility(GameHandler.instance.CurrentPlayer, hex, AbilityType.Vision);
     }
 
     private void OnPlayerAbility(PlayerScript playerDoingAbility, Hex target, AbilityType type)
     {
-        isLookingForVisionTarget = false;
+        Destroy(highlightOneTileDisplayScript);
         if (type == AbilityType.Vision)
         {
-            target.EnableHighlightVision();
+            target.EnableHighlight(HighlightColorType.Yellow);
 
             foreach (var player in GameHandler.instance.AllPlayers)
             {
@@ -96,11 +56,12 @@ public class VisionDisplayScript : MonoBehaviour, IDeselectHandler
         }
     }
 
-    public void OnDeselect(BaseEventData eventData)
+    public void DeselectAbility()
     {
-        if (HighlightedHex != null && HighlightedHex.AbilityHighlight != AbilityType.Vision)
+        if(highlightOneTileDisplayScript != null)
         {
-            HighlightedHex.DisableHighlightMove();
+            highlightOneTileDisplayScript.DisableHighlight();
         }
+        Destroy(highlightOneTileDisplayScript);
     }
 }

@@ -16,6 +16,8 @@ public class MonoHelper : MonoBehaviour
         instance = this;
     }
 
+    public List<ColorHighlightMaterial> ColorHighlightMaterials;
+
     public bool FindTile(Vector3 mousePosition, out List<Hex> result)
     {
         var layermask = 1 << LayerMask.NameToLayer(Statics.LAYER_MASK_HEXTILE);
@@ -35,9 +37,20 @@ public class MonoHelper : MonoBehaviour
         result = null;
         return false;
     }
+}
 
-    public bool CanProcessTileHighlighting()
-    {
-        return !RocketDisplayScript.IsLookingForRocketTarget;
-    }
+[Serializable]
+public class ColorHighlightMaterial
+{
+    public HighlightColorType ColorType;
+    public Material Material;
+}
+
+public enum HighlightColorType
+{
+    White,
+    Purple,
+    Blue,
+    Yellow,
+    Pink
 }

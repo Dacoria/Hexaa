@@ -6,88 +6,37 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class RocketDisplayScript : MonoBehaviour, IDeselectHandler
+public class RocketDisplayScript : MonoBehaviour, IAbilityAction
 {
-    public bool IsLookingForRocketTarget;
-    private bool isFiringRocket;
-    private void Awake()
-    {
-        IsLookingForRocketTarget = false;
-    }
+    private HighlightOneTileDisplayScript highlightOneTileDisplayScript;
 
-    public void RocketButtonClicked()
+    public void InitAbilityAction()
     {
-        IsLookingForRocketTarget = true;
         Textt.GameLocal("Select a tile to fire your rocket");
+        var highlightOneTileSelection = gameObject.AddComponent<HighlightOneTileDisplayScript>();
+        highlightOneTileSelection.CallbackOnTileSelection = OnTileSelection;
+        highlightOneTileSelection.CallbackOnTileSelectionConfirmed = OnTileSelectionConfirmed;
     }
 
-    private void Update()
-    {       
-        if (IsLookingForRocketTarget && !isFiringRocket)
+    private void OnTileSelection(Hex hex)
+    {
+        Textt.GameLocal("Reselect tile to fire the rocket!");
+    }
+
+    private void OnTileSelectionConfirmed(Hex hex)
+    {
+        hex.SetFogHighlight(false); // local!
+        Netw.CurrPlayer().GetComponent<PlayerRocketHandler>().FireRocket(hex);
+        Textt.GameSync("Firing rocket!");
+    }
+
+
+    public void DeselectAbility()
+    {
+        if (highlightOneTileDisplayScript != null)
         {
-            DetectMouseClick();
+            highlightOneTileDisplayScript.DisableHighlight();
         }
-    }
-
-    private void DetectMouseClick()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 mousePos = Input.mousePosition;
-            TryHandleRocketTileSelection(mousePos);
-        }
-    }
-
-    private Hex HighlightedHex;
-
-    private void TryHandleRocketTileSelection(Vector3 mousePos)
-    {
-        List<Hex> selectedTiles;
-        if (MonoHelper.instance.FindTile(mousePos, out selectedTiles))
-        {
-            if(HighlightedHex != null && HighlightedHex == selectedTiles.First())
-            {
-                FireRocketOnHighlightedTile();
-            }
-            else
-            {
-                HighlightTile(selectedTiles);
-            }
-        }
-    }
-
-    private void FireRocketOnHighlightedTile()
-    {
-        isFiringRocket = true;
-        Netw.CurrPlayer().GetComponent<PlayerRocketHandler>().FireRocket(HighlightedHex);
-        Textt.GameSync("Firing!");
-        StartCoroutine(DisableHighlightInXSeconds(1.15f));        
-    }
-
-    private IEnumerator DisableHighlightInXSeconds(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        HighlightedHex.DisableHighlightMove();
-        IsLookingForRocketTarget = false;
-        isFiringRocket = false;
-    }
-
-    private void HighlightTile(List<Hex> result)
-    {
-        if (HighlightedHex != null)
-        {
-            HighlightedHex.DisableHighlightMove();
-        }
-
-        HighlightedHex = result.First();
-        HighlightedHex.EnableHighlightMove();
-    }
-
-    public void OnDeselect(BaseEventData eventData)
-    {
-        if(HighlightedHex != null)
-        {
-            HighlightedHex.DisableHighlightHit();
-        }
+        Destroy(highlightOneTileDisplayScript);
     }
 }

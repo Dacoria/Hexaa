@@ -40,10 +40,7 @@ public class GridHighlight : MonoBehaviour
         var allTiles = HexGrid.instance.GetAllTiles();
         foreach (var tile in allTiles)
         {
-            tile.DisableHighlightHit();
-            tile.DisableHighlightRadar();
-            tile.DisableHighlightMove();
-            tile.DisableHighlightVision();
+            tile.DisableHighlight();
         }
     }
 }

@@ -15,6 +15,6 @@ public static class AbilitySetup
         new AbilitySetting{Type = AbilityType.Vision,       Cost = 1,   MaxPerTurn = 1},
     };
 
-    public static int Cost(this AbilityType abilityType) => AbilitySettings.Single(x => x.Type == abilityType).Cost;
-    public static int MaxPerTurn(this AbilityType abilityType) => AbilitySettings.Single(x => x.Type == abilityType).MaxPerTurn;
+    public static int Cost(this AbilityType abilityType) => abilityType == AbilityType.None ? 0 : AbilitySettings.Single(x => x.Type == abilityType).Cost;
+    public static int MaxPerTurn(this AbilityType abilityType) => abilityType == AbilityType.None ? 0 : AbilitySettings.Single(x => x.Type == abilityType).MaxPerTurn;
 }

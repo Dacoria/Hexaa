@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MovementDisplayScript : MonoBehaviour, IDeselectHandler
+public class MovementDisplayScript : MonoBehaviour, IAbilityAction
 {
     [ComponentInject] private Button button;
 
@@ -14,12 +14,12 @@ public class MovementDisplayScript : MonoBehaviour, IDeselectHandler
         this.ComponentInject();
     }
 
-    public void OnDeselect(BaseEventData eventData)
+    public void DeselectAbility()
     {
         HexTileSelectionManager.instance.DeselectHighlightedNeighbours();
     }
 
-    public void OnMovementButtonClick()
+    public void InitAbilityAction()
     {
         HexTileSelectionManager.instance.HighlightMovementOptionsAroundPlayer(GameHandler.instance.CurrentPlayer);
         Textt.GameLocal("Select the tile to move to");

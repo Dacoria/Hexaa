@@ -9,4 +9,6 @@
     public static string LAYER_MASK_CHARACTER = "Character";
 
     public static string ANIMATION_TRIGGER_START_ANIMATION_SCENE = "Start";
+
+    public static string RESOURCE_PATH_BULLET = "Local/Bullet";
 }

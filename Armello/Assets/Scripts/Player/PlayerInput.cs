@@ -25,11 +25,7 @@ public class PlayerInput : MonoBehaviour
             if(GameHandler.instance.CurrentPlayer != player)
             {
                 return;
-            }
-            if(!MonoHelper.instance.CanProcessTileHighlighting())
-            {
-                return;
-            }
+            }            
 
             if(HexTileSelectionManager.instance.SelectedPlayer == null)
             {

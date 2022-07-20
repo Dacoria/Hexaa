@@ -60,7 +60,7 @@ public class HexTileSelectionManager : MonoBehaviour
     {
         foreach (var neightbour in validNeighboursHightlighted)
         {
-            HexGrid.GetTileAt(neightbour).DisableHighlightMove();
+            HexGrid.GetTileAt(neightbour).DisableHighlight();
         }
         SelectedPlayer = null;
     }
@@ -76,7 +76,7 @@ public class HexTileSelectionManager : MonoBehaviour
             if(!tile.HexType.In(HexType.Water, HexType.Obstacle))
             {
                 validNeighboursHightlighted.Add(neightbour);
-                HexGrid.GetTileAt(neightbour).EnableHighlightMove();
+                HexGrid.GetTileAt(neightbour).EnableHighlight(HighlightColorType.Purple);
             }
         }
     }    

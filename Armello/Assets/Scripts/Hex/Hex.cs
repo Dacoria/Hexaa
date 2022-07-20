@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +7,7 @@ using UnityEngine;
 public class Hex : MonoBehaviour
 {
     [ComponentInject] private HexCoordinates hexCoordinates;
-    [ComponentInject] private HighlightHexMove highlightMove;
-    [ComponentInject] private HighlightHexHit highlighHit;
-    [ComponentInject] private HighlightHexRadar highlighRadar;
-    [ComponentInject] private HighlightHexVision highlighVision;
+    [ComponentInject] private HighlightHexScript highlightMove;
 
     [ComponentInject] private FogOnHex fogHighlight;
 
@@ -24,14 +22,16 @@ public class Hex : MonoBehaviour
         this.ComponentInject();
     }
 
-    public void EnableHighlightMove() => highlightMove.SetHighlight(true);
-    public void DisableHighlightMove() => highlightMove.SetHighlight(false);
-    public void EnableHighlightHit() => highlighHit.SetHighlight(true);
-    public void DisableHighlightHit() => highlighHit.SetHighlight(false);
-    public void EnableHighlightRadar() => highlighRadar.SetHighlight(true);
-    public void DisableHighlightRadar() => highlighRadar.SetHighlight(false);
-    public void EnableHighlightVision() => highlighVision.SetHighlight(true);
-    public void DisableHighlightVision() => highlighVision.SetHighlight(false);
+    //public void EnableHighlight(AbilityType type) => highlightMove.SetHighlight(true, MonoHelper.instance.ColorAbilityDict.Single(x => x.Value == type).Key);
+    public void EnableHighlight(HighlightColorType type) => highlightMove.SetHighlight(true, type);
+    public void DisableHighlight() => highlightMove.SetHighlight(false, null);
+    public void DisableHighlight(HighlightColorType type)
+    {
+        if(highlightMove.CurrentColorHighlight == type)
+        {
+            DisableHighlight(type);
+        }
+    }
 
     public void SetFogHighlight(bool fogEnabled) => fogHighlight.SetFog(fogEnabled);
 
