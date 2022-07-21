@@ -49,6 +49,11 @@ public class HexGrid : MonoBehaviour
         return hexTileDict.Values.ToList();
     }
 
+    public List<Hex> GetTiles(HighlightColorType type)
+    {
+        return hexTileDict.Values.Where(x => x.GetHighlight().HasValue && x.GetHighlight().Value == type).ToList();
+    }
+
     public Hex GetTileAt(Vector3Int hexCoordinates)
     {
         Hex result = null;

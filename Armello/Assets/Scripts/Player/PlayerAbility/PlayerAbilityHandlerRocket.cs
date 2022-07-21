@@ -12,7 +12,7 @@ public partial class PlayerAbilityHandler : MonoBehaviour
     {
         if (playerDoingAbility.IsMyTurn())
         {
-            target.SetFogHighlight(false); // local!
+            target.SetFogOnHex(false); // local!
         }
 
         Vector3 destination = target.transform.position + new Vector3(0, 15, 0);

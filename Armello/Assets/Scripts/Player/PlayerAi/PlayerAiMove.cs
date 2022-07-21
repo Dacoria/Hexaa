@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.Events;
 public class PlayerAiMove : MonoBehaviour
 {
     [ComponentInject] private PlayerScript player;
-    //private List<AbilityPointsDisplayScript>
+    [ComponentInject] private PlayerAbilityPoints playerAbilityPoints;
 
     private void Awake()
     {
@@ -16,6 +17,9 @@ public class PlayerAiMove : MonoBehaviour
 
     public void DoTurn()
     {
-        //var abilities = AbilityType.get
+        var randomChoice = UnityEngine.Random.Range(0, 3); // excl. max!
+
+
+
     }
 }

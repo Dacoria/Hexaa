@@ -70,7 +70,7 @@ public class ButtonEvents : MonoBehaviour
         UpdateAllAbilities(setToUnselected: true);
     }
 
-    private void UpdateAllAbilities(bool setToUnselected, bool? interactable = null)
+    private void UpdateAllAbilities(bool setToUnselected, bool? interactable = null, int? turnCountPlayer = null)
     {
         foreach (AbilityType abilityType in Enum.GetValues(typeof(AbilityType)))
         {
@@ -84,34 +84,33 @@ public class ButtonEvents : MonoBehaviour
             {
                 buttonUpdater.SetAbilityInteractable(abilityType, interactable.Value);
             }
+            if(turnCountPlayer.HasValue)
+            {
+                buttonUpdater.SetAbilityInteractable(abilityType, turnCountPlayer.Value >= abilityType.AvailableFromTurn());
+            }
         }
     }
 
     private void OnNewRoundStarted(List<PlayerScript> arg1, PlayerScript currentPlayer)
     {
-        CheckEnableButtonsNewTurn(currentPlayer);
-        DisableRocketOnFirstRound(currentPlayer);
-    }
-
-    private void DisableRocketOnFirstRound(PlayerScript currentPlayer)
-    {
-        if (currentPlayer.GetComponent<PlayerTurnCount>().TurnCount <= 1)
-        {
-            buttonUpdater.SetAbilityInteractable(AbilityType.Rocket, false);
-        }
-    }
+        StartCoroutine(CheckEnableButtonsNewTurn(currentPlayer));
+    }   
 
     private void OnNewPlayerTurn(PlayerScript currentPlayer)
     {
-        CheckEnableButtonsNewTurn(currentPlayer);
-        DisableRocketOnFirstRound(currentPlayer);
+        StartCoroutine(CheckEnableButtonsNewTurn(currentPlayer));
     }
 
-    private void CheckEnableButtonsNewTurn(PlayerScript currentPlayer)
+    private IEnumerator CheckEnableButtonsNewTurn(PlayerScript currentPlayer)
     {
-        if (GameHandler.instance.GameStatus != GameStatus.ActiveRound) { return; }
-        UpdateAllAbilities(interactable: currentPlayer.IsOnMyNetwork(), setToUnselected: true);
-        UpdateEndTurnButton(visible: true, interactable: currentPlayer.IsOnMyNetwork());
+        yield return new WaitForSeconds(0.1f);// wacht tot wijziging is verwerkt
+
+        if (GameHandler.instance.GameStatus == GameStatus.ActiveRound) 
+        {
+            UpdateEndTurnButton(visible: true, interactable: currentPlayer.IsOnMyNetwork());
+            var turnCountPlayer = currentPlayer.GetComponent<PlayerTurnCount>().TurnCount;
+            UpdateAllAbilities(interactable: currentPlayer.IsOnMyNetwork(), setToUnselected: true, turnCountPlayer: turnCountPlayer);
+        }
     }
 
     private void OnDestroy()

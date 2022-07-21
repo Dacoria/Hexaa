@@ -11,7 +11,7 @@ public class Hex : MonoBehaviour
 
     [ComponentInject] private FogOnHex fogHighlight;
 
-    public AbilityType AbilityHighlight;
+    public HighlightColorType? GetHighlight() => highlightMove.CurrentColorHighlight;
 
     public Vector3Int HexCoordinates => hexCoordinates.offSetCooridnates;
 
@@ -25,7 +25,6 @@ public class Hex : MonoBehaviour
         OrigPosition = this.transform.position;
     }
 
-    //public void EnableHighlight(AbilityType type) => highlightMove.SetHighlight(true, MonoHelper.instance.ColorAbilityDict.Single(x => x.Value == type).Key);
     public void EnableHighlight(HighlightColorType type) => highlightMove.SetHighlight(true, type);
     public void DisableHighlight() => highlightMove.SetHighlight(false, null);
     public void DisableHighlight(HighlightColorType type)
@@ -36,7 +35,19 @@ public class Hex : MonoBehaviour
         }
     }
 
-    public void SetFogHighlight(bool fogEnabled) => fogHighlight.SetFog(fogEnabled);
+    public void SetFogOnHex(bool fogEnabled)
+    {
+        fogHighlight.SetFog(fogEnabled);
+    
+        foreach (var player in GameHandler.instance.AllPlayers)
+        {
+            if (HexCoordinates == player.CurrentHexTile.HexCoordinates)
+            {
+                player.GetComponentInChildren<PlayerModel>(true).gameObject.SetActive(!fogEnabled);
+            }
+        }
+        
+    }
 
     public int GetCost() => HexType switch
     {

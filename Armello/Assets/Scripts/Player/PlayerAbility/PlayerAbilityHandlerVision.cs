@@ -10,17 +10,11 @@ public partial class PlayerAbilityHandler : MonoBehaviour
     {        
         if (playerDoingAbility.IsMyTurn())
         {
-            target.SetFogHighlight(false); // local!
+            target.SetFogOnHex(false); // local!
         }
 
         target.EnableHighlight(HighlightColorType.Yellow);
 
-        foreach (var player in GameHandler.instance.AllPlayers)
-        {
-            if (target.HexCoordinates == player.CurrentHexTile.HexCoordinates)
-            {
-                player.GetComponentInChildren<PlayerModel>(true).gameObject.SetActive(true);
-            }
-        }        
+               
     }
 }

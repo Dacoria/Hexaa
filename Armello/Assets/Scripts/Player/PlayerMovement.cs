@@ -5,23 +5,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private AnimationCurve curve;
+    [ComponentInject] private Animator animator;
 
-    public IEnumerator MoveToDestination(Vector3 endPosition, float duration, float delayedStart = 0, Action callbackOnFinished = null)
+    private void Awake()
     {
-        yield return new WaitForSeconds(delayedStart);
-
-        float elapsedTime = 0f;
-        var startPosition = transform.position;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float percComplete = elapsedTime / duration;
-            transform.position = Vector3.Lerp(startPosition, endPosition, curve.Evaluate(percComplete));
-            yield return null;
-        }
-
-        callbackOnFinished?.Invoke();
+        this.ComponentInject();
     }
 
     private float previousAngleDiff;
@@ -31,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
         float elapsedTime = 0f;
         var targetDirection = endPosition - transform.position;
 
+        
         while (elapsedTime < 3)
         {
             elapsedTime += Time.deltaTime;
@@ -46,7 +35,27 @@ public class PlayerMovement : MonoBehaviour
             previousAngleDiff = currentAngleDiff;
             yield return null;
         }
+        
+        callbackOnFinished?.Invoke();
+    }
+
+    public IEnumerator MoveToDestination(Vector3 endPosition, float duration, float delayedStart = 0, Action callbackOnFinished = null)
+    {
+        yield return new WaitForSeconds(delayedStart);
+
+        animator.SetBool(Statics.ANIMATION_BOOL_RUN, true);
+        float elapsedTime = 0f;
+        var startPosition = transform.position;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float percComplete = elapsedTime / duration;
+            transform.position = Vector3.Lerp(startPosition, endPosition, curve.Evaluate(percComplete));
+            yield return null;
+        }
 
         callbackOnFinished?.Invoke();
+        animator.SetBool(Statics.ANIMATION_BOOL_RUN, false);
     }
 }

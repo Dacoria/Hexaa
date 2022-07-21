@@ -65,7 +65,7 @@ public class FogGrid : MonoBehaviour
         foreach(var tile in allTiles)
         {
             var isVisibleTile = tile.HexCoordinates == currPlayerTile.HexCoordinates || neighbourTiles.Any(x => x == tile.HexCoordinates);
-            tile.SetFogHighlight(!isVisibleTile);
+            tile.SetFogOnHex(!isVisibleTile);
         }
     }
 

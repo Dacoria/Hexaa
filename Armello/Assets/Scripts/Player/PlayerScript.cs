@@ -34,6 +34,10 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
         {
             PlayerId = info.photonView.OwnerActorNr;
         }
+        if(IsAi && PhotonNetwork.IsMasterClient)
+        {
+            gameObject.AddComponent<PlayerAi>();
+        }
 
         NetworkHelper.instance.RefreshPlayerGos();
         PlayerName = name;
