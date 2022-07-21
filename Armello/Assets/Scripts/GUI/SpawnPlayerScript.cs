@@ -6,33 +6,33 @@ using UnityEngine.UI;
 
 public class SpawnPlayerScript : MonoBehaviour
 {
-    [ComponentInject] private Button button;
+    private List<Button> buttons;
 
     private void Awake()
     {
-        this.ComponentInject();
+        this.buttons = GetComponentsInChildren<Button>().ToList();
     }
 
-    public void OnButtonClick()
+    public void OnButtonClick(bool useAi)
     {
-        SpawnPlayers.instance.SpawnDummyPlayer();
+        SpawnPlayers.instance.SpawnDummyPlayer(useAi);
     }
 
-    private bool hasTwoPlayers;
+    private bool hasMaxAmountOfPlayers;
 
     private void Update()
     {
-        if (GameHandler.instance.GameStatus == GameStatus.GameEnded)
+        if (GameHandler.instance.GameStatus != GameStatus.NotStarted)
         {
-            button.interactable = false;
+            buttons.ForEach(button => button.interactable = false);
         }
-        else if (!hasTwoPlayers)
+        else if (!hasMaxAmountOfPlayers)
         {
-            hasTwoPlayers = NetworkHelper.instance.AllPlayers.Count() >= 2;
+            hasMaxAmountOfPlayers = NetworkHelper.instance.AllPlayers.Count() >= GameHandler.instance.StartPosTiles.Count();
         }
         else
         {
-            button.interactable = false;
+            buttons.ForEach(button => button.interactable = false);
         }
     }
 }

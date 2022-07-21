@@ -42,7 +42,7 @@ public class HexTileSelectionManager : MonoBehaviour
 
         if (validNeighboursClicked.Count == 1)
         {
-            SelectedPlayer.GetComponent<PlayerMovement>().DoMove(validNeighboursClicked[0]);
+            NetworkActionEvents.instance.PlayerAbility(SelectedPlayer, validNeighboursClicked[0], AbilityType.Movement);
         }
         else if(validNeighboursClicked.Count > 1)
         {

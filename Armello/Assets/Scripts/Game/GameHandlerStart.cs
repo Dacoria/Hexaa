@@ -6,10 +6,12 @@ using UnityEngine;
 
 public partial class GameHandler : MonoBehaviour
 {
-    private List<Vector3Int> StartPosTiles = new List<Vector3Int>
+    public List<Vector3Int> StartPosTiles = new List<Vector3Int>
     {
-        new Vector3Int(2, 0, 1),
-        new Vector3Int(11, 0, 9)
+        new Vector3Int(2, 0, 1), // bottom left
+        new Vector3Int(12, 0, 9), // top right
+        new Vector3Int(2, 0, 9), // bottom right
+        new Vector3Int(12, 0, 1) // top left
     };
 
     public List<PlayerScript> AllPlayers;
@@ -77,7 +79,7 @@ public partial class GameHandler : MonoBehaviour
         for (int i = 0; i < AllPlayers.Count; i++)
         {
             var startHexTile = HexGrid.GetTileAt(StartPosTiles[i]);
-            AllPlayers[i].transform.position = startHexTile.transform.position;
+            AllPlayers[i].transform.position = new Vector3(startHexTile.transform.position.x, 0, startHexTile.transform.position.z); // vanwege grids omhoog komen
             AllPlayers[i].CurrentHexTile = startHexTile;
         }
     }

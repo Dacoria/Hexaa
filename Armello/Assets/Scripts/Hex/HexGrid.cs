@@ -19,8 +19,6 @@ public class HexGrid : MonoBehaviour
 
     private void Start()
     {
-        var counter = 0;
-
         var hexes = FindObjectsOfType<Hex>();
         var hexesSorted = hexes.OrderBy(x => Vector3.Distance(x.transform.position, new Vector3(0,0,0))).ToList();
 
@@ -28,9 +26,21 @@ public class HexGrid : MonoBehaviour
         {
             hexTileDict[hex.HexCoordinates] = hex;
             var lerp = hex.gameObject.AddComponent<LerpMovement>();
-            //StartCoroutine(lerp.MoveToDestination(hex.transform.position + new Vector3(0, -20, 0), hex.transform.position, duration: 2, delayedStart: counter * 0.03f));
             StartCoroutine(lerp.MoveToDestination(hex.transform.position + new Vector3(0, -100, 0), hex.transform.position, duration: 1.5f, delayedStart: hex.transform.position.x * 0.15f));
-            counter++;
+        }        
+    }
+
+    private bool HexGridLoaded;
+
+    private void Update()
+    {
+        if(!HexGridLoaded)
+        {
+            HexGridLoaded = hexTileDict.Values.All(x => Vector3.Distance(x.OrigPosition, x.transform.position) < 0.01f);
+            if(HexGridLoaded)
+            {
+                ActionEvents.GridLoaded?.Invoke();
+            }
         }
     }
 

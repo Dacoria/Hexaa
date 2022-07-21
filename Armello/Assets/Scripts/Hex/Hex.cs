@@ -17,9 +17,12 @@ public class Hex : MonoBehaviour
 
     public HexType HexType;
 
+    public Vector3 OrigPosition;
+
     void Awake()
     {
         this.ComponentInject();
+        OrigPosition = this.transform.position;
     }
 
     //public void EnableHighlight(AbilityType type) => highlightMove.SetHighlight(true, MonoHelper.instance.ColorAbilityDict.Single(x => x.Value == type).Key);

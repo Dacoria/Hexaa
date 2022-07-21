@@ -4,52 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [ComponentInject] private PlayerScript playerScript;
     [SerializeField] private AnimationCurve curve;
-    private Hex NewHexTile;
 
-    private void Awake()
-    {
-        this.ComponentInject();
-    }
-
-    private void Start()
-    {
-        ActionEvents.PlayerAbility += OnPlayerAbility;
-    }
-
-    private void OnDestroy()
-    {
-        ActionEvents.PlayerAbility -= OnPlayerAbility;
-    }    
-
-    public void DoMove(Hex selectedHex)
-    {        
-        NewHexTile = selectedHex;
-        StartCoroutine(RotateTowardsDestination(NewHexTile.transform.position, OnRotationFinished));
-    }
-
-    private void OnRotationFinished()
-    {
-        StartCoroutine(MoveToDestination(NewHexTile.transform.position, duration: 1, callbackOnFinished: OnMovingFinished));
-    }
-
-    private void OnMovingFinished()
-    {        
-        NetworkActionEvents.instance.PlayerAbility(playerScript, NewHexTile, AbilityType.Movement);
-    }
-
-    private void OnPlayerAbility(PlayerScript player, Hex hex, AbilityType type)
-    {
-        if(type == AbilityType.Movement)
-        {
-            // eigen speler --> geen verschil te zien. Netwerk speler: Update locatie. Sync!!!!
-            player.transform.position = hex.transform.position;
-            player.CurrentHexTile = hex;
-        }
-    }
-
-    private IEnumerator MoveToDestination(Vector3 endPosition, float duration, float delayedStart = 0, Action callbackOnFinished = null)
+    public IEnumerator MoveToDestination(Vector3 endPosition, float duration, float delayedStart = 0, Action callbackOnFinished = null)
     {
         yield return new WaitForSeconds(delayedStart);
 
@@ -69,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float previousAngleDiff;
 
-    private IEnumerator RotateTowardsDestination(Vector3 endPosition, Action callbackOnFinished)
+    public IEnumerator RotateTowardsDestination(Vector3 endPosition, Action callbackOnFinished)
     {
         float elapsedTime = 0f;
         var targetDirection = endPosition - transform.position;
@@ -90,6 +47,6 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        callbackOnFinished();
+        callbackOnFinished?.Invoke();
     }
 }

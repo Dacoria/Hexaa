@@ -21,7 +21,7 @@ public class SpawnPlayers : MonoBehaviour
 
         if(SpawnDummyPlayerOnStart)
         {
-            SpawnDummyPlayer();
+            SpawnDummyPlayer(true);
         }
     }
 
@@ -34,33 +34,32 @@ public class SpawnPlayers : MonoBehaviour
         return playerCount;
     }
 
-    public void SpawnDummyPlayer()
+    public void SpawnDummyPlayer(bool isAi)
     {
+        var aiPrefix = isAi ? "AI_" : "";
         var playerCounter = GetPlayerCounter();
         if (playerCounter == 1)
         {
-            SpawnPlayer("P2", true);
+            SpawnPlayer(aiPrefix + "P2", true, isAi);
         }
-
-
-        //else if (playerCounter == 2)
-        //{
-        //    SpawnPlayer("P3", true);
-        //}
-        //else if (playerCounter == 3)
-        //{
-        //    SpawnPlayer("P4", true);
-        //}
+        else if (playerCounter == 2)
+        {
+            SpawnPlayer(aiPrefix + "P3", true, isAi);
+        }
+        else if (playerCounter == 3)
+        {
+            SpawnPlayer(aiPrefix + "P4", true, isAi);
+        }
     }
 
-    public void SpawnPlayer(string name, bool isDummy)
+    public void SpawnPlayer(string name, bool isDummy, bool useAi = false)
     {
         if (!PhotonNetwork.IsConnected)
         {
             return;
         }
 
-        var isAi = isDummy && !PhotonNetwork.OfflineMode; // offline = altijd dummy zonder AI
+        var isAi = isDummy && useAi;
 
         if (!PhotonNetwork.OfflineMode && !isAi)
         {

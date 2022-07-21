@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 3645293598411083039}
   - component: {fileID: 3645293598411083036}
   - component: {fileID: 3645293598411083037}
-  - component: {fileID: 3645293598470321500}
   - component: {fileID: 5768494960248128124}
   - component: {fileID: 3170761307677753085}
   - component: {fileID: 1718713571678547269}
+  - component: {fileID: 5980369478371465905}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -118,19 +118,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3645293598470321500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3645293598411083032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60565b7791a89464a9f58d463e393f4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RocketPrefab: {fileID: 7273217049370507789, guid: fcd98379b8ced564a85ff8b362a06118, type: 3}
 --- !u!114 &5768494960248128124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +168,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TurnCount: 0
+--- !u!114 &5980369478371465905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645293598411083032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e60e35f74e6f0e4db5bc5f1f273b949, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RocketPrefab: {fileID: 7273217049370507789, guid: fcd98379b8ced564a85ff8b362a06118, type: 3}
 --- !u!1 &6238259098244947033
 GameObject:
   m_ObjectHideFlags: 0

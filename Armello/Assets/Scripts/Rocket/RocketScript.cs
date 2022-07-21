@@ -50,10 +50,9 @@ public class RocketScript : MonoBehaviour
         foreach (var player in allPlayers)
         {
             if (player.CurrentHexTile == hexTileHit)
-            {
-                // voor nu -> altijd dood met 1 raket-hit --> KILL
-                player.gameObject.SetActive(false);
+            {                
                 playerHit = player;
+                break;
             }
         }
 

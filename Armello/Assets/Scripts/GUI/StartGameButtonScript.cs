@@ -16,8 +16,24 @@ public class StartGameButtonScript : MonoBehaviour
         this.ComponentInject();
     }
 
+    private void Start()
+    {
+        ActionEvents.GridLoaded += OnGridLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        ActionEvents.GridLoaded -= OnGridLoaded;
+    }
+
+    private void OnGridLoaded()
+    {
+        gridLoaded = true;
+    }
+
     private bool hasStartedFirstGame;
     private bool hasAtLeastTwoPlayers;
+    private bool gridLoaded;
 
     public void OnButtonClick()
     {
@@ -32,6 +48,6 @@ public class StartGameButtonScript : MonoBehaviour
         }
 
         text.text = hasStartedFirstGame ? "Reset" : "Start";
-        button.interactable = GameHandler.instance.GameStatus != GameStatus.GameEnded && hasAtLeastTwoPlayers;
+        button.interactable = gridLoaded && GameHandler.instance.GameStatus != GameStatus.GameEnded && hasAtLeastTwoPlayers;
     }
 }

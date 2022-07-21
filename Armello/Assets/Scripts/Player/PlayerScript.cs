@@ -37,6 +37,6 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
 
         NetworkHelper.instance.RefreshPlayerGos();
         PlayerName = name;
-        gameObject.transform.position = new Vector3(-1000, 1000, -1000);// uit scherm        
+        GetComponentInChildren<PlayerModel>(true).gameObject.SetActive(false); // begin met onzichtbaar model
     }
 }

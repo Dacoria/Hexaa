@@ -7,16 +7,6 @@ using UnityEngine.UI;
 
 public class RadarDisplayScript : MonoBehaviour, IAbilityAction
 {
-    private void Start()
-    {
-        ActionEvents.PlayerAbility += OnPlayerAbility;
-    }
-
-    private void OnDestroy()
-    {
-        ActionEvents.PlayerAbility -= OnPlayerAbility;
-    }
-
     private HighlightOneTileDisplayScript highlightOneTileDisplayScript;
 
     public void InitAbilityAction()
@@ -44,32 +34,7 @@ public class RadarDisplayScript : MonoBehaviour, IAbilityAction
         var gridSelected = grids[0].GetHex();
 
         NetworkActionEvents.instance.PlayerAbility(GameHandler.instance.CurrentPlayer, gridSelected, AbilityType.Radar);
-    }
-
-    private void OnPlayerAbility(PlayerScript player, Hex target, AbilityType type)
-    {
-        if(type == AbilityType.Radar)
-        {
-            ClearAllRadars();
-
-            var grids = HexGrid.instance.GetNeighboursFor(target.HexCoordinates);
-            target.EnableHighlight(HighlightColorType.Blue);
-
-            foreach (var grid in grids)
-            {
-                grid.GetHex().EnableHighlight(HighlightColorType.Blue);
-            }
-        }
-    }
-
-    private void ClearAllRadars()
-    {
-        var allTiles = HexGrid.instance.GetAllTiles();
-        foreach (var tile in allTiles)
-        {
-            tile.DisableHighlight(HighlightColorType.Blue);
-        }
-    }
+    } 
 
     public void DeselectAbility()
     {

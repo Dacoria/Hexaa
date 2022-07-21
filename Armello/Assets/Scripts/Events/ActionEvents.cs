@@ -9,4 +9,6 @@ public static class ActionEvents
     public static Action<bool> EndRound;
     public static Action EndGame;
     public static Action<PlayerScript> NewPlayerTurn;
+
+    public static Action GridLoaded;
 }

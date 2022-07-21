@@ -25,12 +25,10 @@ public class RocketDisplayScript : MonoBehaviour, IAbilityAction
     }
 
     private void OnTileSelectionConfirmed(Hex hex)
-    {
-        hex.SetFogHighlight(false); // local!
-        Netw.CurrPlayer().GetComponent<PlayerRocketHandler>().FireRocket(hex);
+    {        
+        NetworkActionEvents.instance.PlayerAbility(Netw.CurrPlayer(), hex, AbilityType.Rocket);
         Textt.GameSync("Firing rocket!");
     }
-
 
     public void DeselectAbility()
     {

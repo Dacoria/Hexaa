@@ -8,16 +8,6 @@ using UnityEngine.UI;
 
 public class VisionDisplayScript : MonoBehaviour, IAbilityAction
 {
-    private void Start()
-    {
-        ActionEvents.PlayerAbility += OnPlayerAbility;
-    }
-
-    private void OnDestroy()
-    {
-        ActionEvents.PlayerAbility -= OnPlayerAbility;
-    }
-
     private HighlightOneTileDisplayScript highlightOneTileDisplayScript;
 
     public void InitAbilityAction()
@@ -35,26 +25,8 @@ public class VisionDisplayScript : MonoBehaviour, IAbilityAction
     }
 
     private void OnTileSelectionConfirmed(Hex hex)
-    {   
-        hex.SetFogHighlight(false); // local!
-        NetworkActionEvents.instance.PlayerAbility(GameHandler.instance.CurrentPlayer, hex, AbilityType.Vision);
-    }
-
-    private void OnPlayerAbility(PlayerScript playerDoingAbility, Hex target, AbilityType type)
     {
-        Destroy(highlightOneTileDisplayScript);
-        if (type == AbilityType.Vision)
-        {
-            target.EnableHighlight(HighlightColorType.Yellow);
-
-            foreach (var player in GameHandler.instance.AllPlayers)
-            {
-                if(target.HexCoordinates == player.CurrentHexTile.HexCoordinates)
-                {
-                    player.GetComponentInChildren<PlayerModel>(true).gameObject.SetActive(true);
-                }              
-            }            
-        }
+        NetworkActionEvents.instance.PlayerAbility(GameHandler.instance.CurrentPlayer, hex, AbilityType.Vision);
     }
 
     public void DeselectAbility()

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAbility : MonoBehaviour
+public class PlayerAbilityPoints : MonoBehaviour
 {
     [ComponentInject] private PlayerScript playerScript;
     public int PlayerActionsPerTurn = 5;
