@@ -48,7 +48,7 @@ public partial class GameHandler : MonoBehaviour
 
     private void OnNewRoundStarted(List<PlayerScript> players, PlayerScript currentPlayer)
     {
-        GameEnded = false;
+        GameStatus = GameStatus.ActiveRound;
 
         // refresh om te checken
         AllPlayers = NetworkHelper.instance.GetPlayers().Take(StartPosTiles.Count).ToList();

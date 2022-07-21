@@ -55,7 +55,7 @@ public class NetworkActionEvents : MonoBehaviour
     [PunRPC]
     public void RPC_AE_RoundEnded(bool reachedMiddle)
     {
-        ActionEvents.RoundEnded?.Invoke(reachedMiddle);
+        ActionEvents.EndRound?.Invoke(reachedMiddle);
     }
 
     public void NewPlayerTurn(PlayerScript currentPlayer)

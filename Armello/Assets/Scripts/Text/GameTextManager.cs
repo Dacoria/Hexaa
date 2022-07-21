@@ -7,7 +7,7 @@ public class GameTextManager : MonoBehaviour
     private void Start()
     {
         ActionEvents.PlayerRocketHitTile += OnPlayerRocketHitTile;
-        ActionEvents.RoundEnded += OnRoundEnded;
+        ActionEvents.EndRound += OnEndRound;
         ActionEvents.NewRoundStarted += OnNewRoundStarted;
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
         ActionEvents.PlayerAbility += OnPlayerAbility;
@@ -31,7 +31,7 @@ public class GameTextManager : MonoBehaviour
         }
     }
 
-    private void OnRoundEnded(bool reachedMiddle)
+    private void OnEndRound(bool reachedMiddle)
     {
         if (!reachedMiddle)
         {
@@ -65,7 +65,7 @@ public class GameTextManager : MonoBehaviour
 
     private void OnPlayerAbility(PlayerScript player, Hex hex, AbilityType type)
     {
-        if (GameHandler.instance.GameEnded) { return; }
+        if (GameHandler.instance.GameStatus != GameStatus.ActiveRound) { return; }
 
         if(type == AbilityType.Radar)
         {
@@ -82,7 +82,7 @@ public class GameTextManager : MonoBehaviour
     private void OnDestroy()
     {
         ActionEvents.PlayerRocketHitTile -= OnPlayerRocketHitTile;
-        ActionEvents.RoundEnded -= OnRoundEnded;
+        ActionEvents.EndRound -= OnEndRound;
         ActionEvents.NewRoundStarted -= OnNewRoundStarted;
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
         ActionEvents.PlayerAbility -= OnPlayerAbility;

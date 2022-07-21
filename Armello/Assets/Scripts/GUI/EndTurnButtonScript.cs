@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class EndTurnButtonScript : MonoBehaviour
 {
+    // Wordt vanuit Button updater & Button event (canvas) geupdatet!
+
     [ComponentInject] public Button Button;
 
     private void Awake()

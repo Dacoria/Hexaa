@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class StartGameButtonScript : MonoBehaviour
 {
@@ -31,6 +32,6 @@ public class StartGameButtonScript : MonoBehaviour
         }
 
         text.text = hasStartedFirstGame ? "Reset" : "Start";
-        button.interactable = hasAtLeastTwoPlayers;
+        button.interactable = GameHandler.instance.GameStatus != GameStatus.GameEnded && hasAtLeastTwoPlayers;
     }
 }

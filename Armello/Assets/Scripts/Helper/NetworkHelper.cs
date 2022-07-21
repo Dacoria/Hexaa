@@ -45,6 +45,16 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
         }
     }
 
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        base.OnPlayerLeftRoom(otherPlayer);
+        ActionEvents.EndGame?.Invoke();
+        Textt.GameLocal("A player has left the game! This is not supported. Reconnect for a new game");
+
+        PlayerList = PhotonNetwork.PlayerList;
+        RefreshPlayerGos();
+    }
+
     public PlayerScript OtherPlayerClosest(PlayerScript me)
     {
         return OtherPlayerClosest(me, me.transform.position);
@@ -62,14 +72,7 @@ public class NetworkHelper : MonoBehaviourPunCallbacks
         base.OnPlayerEnteredRoom(newPlayer);
         PlayerList = PhotonNetwork.PlayerList;
         RefreshPlayerGos();
-    }
-
-    public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        base.OnPlayerLeftRoom(otherPlayer);
-        PlayerList = PhotonNetwork.PlayerList;
-        RefreshPlayerGos();
-    }
+    }  
 
     public List<PlayerScript> GetPlayerList()
     {

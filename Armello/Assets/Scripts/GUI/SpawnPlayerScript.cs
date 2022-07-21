@@ -22,7 +22,11 @@ public class SpawnPlayerScript : MonoBehaviour
 
     private void Update()
     {
-        if (!hasTwoPlayers)
+        if (GameHandler.instance.GameStatus == GameStatus.GameEnded)
+        {
+            button.interactable = false;
+        }
+        else if (!hasTwoPlayers)
         {
             hasTwoPlayers = NetworkHelper.instance.AllPlayers.Count() >= 2;
         }

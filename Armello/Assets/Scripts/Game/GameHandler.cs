@@ -8,10 +8,12 @@ public partial class GameHandler : MonoBehaviour
 {
     private HexGrid HexGrid;
     public static GameHandler instance;
+    public GameStatus GameStatus;
 
     private void Awake()
     {
         instance = this;
+        GameStatus = GameStatus.NotStarted;
     }
 
     private void Start()
@@ -20,8 +22,9 @@ public partial class GameHandler : MonoBehaviour
         ActionEvents.PlayerRocketHitTile += OnPlayerRocketHitTile;
         ActionEvents.NewRoundStarted += OnNewRoundStarted;
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
-        ActionEvents.RoundEnded += OnRoundEnded;
-    }    
+        ActionEvents.EndRound += OnEndRound;
+        ActionEvents.EndGame += OnEndGame;
+    }
 
     private void OnNewPlayerTurn(PlayerScript player)
     {
@@ -33,7 +36,7 @@ public partial class GameHandler : MonoBehaviour
         ActionEvents.PlayerRocketHitTile -= OnPlayerRocketHitTile;
         ActionEvents.NewRoundStarted -= OnNewRoundStarted;
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
-        ActionEvents.RoundEnded -= OnRoundEnded;
+        ActionEvents.EndRound -= OnEndRound;
     }
 
     private void OnPlayerRocketHitTile(PlayerScript ownerRocket, Hex hex, PlayerScript playerHit, bool playerKilled)

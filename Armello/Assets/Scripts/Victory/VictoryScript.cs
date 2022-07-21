@@ -25,7 +25,7 @@ public class VictoryScript : MonoBehaviour
             if(hex.HexCoordinates == VictoryHex.HexCoordinates)
             {
                 Textt.GameSync("Victory! " + player.PlayerName + " has reached the middle!");
-                ActionEvents.RoundEnded?.Invoke(true);
+                ActionEvents.EndRound?.Invoke(true);
             }
         }
     }

@@ -20,7 +20,8 @@ public class ButtonEvents : MonoBehaviour
         ActionEvents.NewPlayerTurn += OnNewPlayerTurn;
         ActionEvents.NewRoundStarted += OnNewRoundStarted;
         ActionEvents.PlayerAbility += OnPlayerAbility;
-        ActionEvents.RoundEnded += OnRoundEnded;
+        ActionEvents.EndRound += OnEndRound;
+        ActionEvents.EndGame += OnEndGame;
         UpdateAllAbilities(setToUnselected: true, interactable: false);
         UpdateEndTurnButton(visible: false, interactable: false);
     }
@@ -45,15 +46,21 @@ public class ButtonEvents : MonoBehaviour
         }
     }
 
-    private void OnRoundEnded(bool reachedMiddle)
+    private void OnEndRound(bool reachedMiddle)
     {
         UpdateAllAbilities(setToUnselected: true, interactable: false);
         UpdateEndTurnButton(interactable: false);
-    }    
+    }
+
+    private void OnEndGame()
+    {
+        UpdateAllAbilities(setToUnselected: true, interactable: false);
+        UpdateEndTurnButton(interactable: false);
+    }
 
     private void OnPlayerAbility(PlayerScript player, Hex hex, AbilityType type)
     {
-        if(GameHandler.instance.GameEnded) { return; }
+        if(GameHandler.instance.GameStatus != GameStatus.ActiveRound) { return; }
         StartCoroutine(UpdatePlayerAbilityButtons(player, hex, type));
     }
 
@@ -102,7 +109,7 @@ public class ButtonEvents : MonoBehaviour
 
     private void CheckEnableButtonsNewTurn(PlayerScript currentPlayer)
     {
-        if (GameHandler.instance.GameEnded) { return; }
+        if (GameHandler.instance.GameStatus != GameStatus.ActiveRound) { return; }
         UpdateAllAbilities(interactable: currentPlayer.IsOnMyNetwork(), setToUnselected: true);
         UpdateEndTurnButton(visible: true, interactable: currentPlayer.IsOnMyNetwork());
     }
@@ -112,6 +119,8 @@ public class ButtonEvents : MonoBehaviour
         ActionEvents.NewPlayerTurn -= OnNewPlayerTurn;
         ActionEvents.NewRoundStarted -= OnNewRoundStarted;
         ActionEvents.PlayerAbility -= OnPlayerAbility;
-        ActionEvents.RoundEnded -= OnRoundEnded;
+        ActionEvents.EndRound -= OnEndRound;
+        ActionEvents.EndGame -= OnEndGame;
+
     }
 }
