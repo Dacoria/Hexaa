@@ -26,14 +26,7 @@ public class RadarDisplayScript : MonoBehaviour, IAbilityAction
     private void OnTileSelectionConfirmed(Hex hex)
     {
         // doet nog niks met selected tile
-
-        var otherPlayer = NetworkHelper.instance.OtherPlayerClosest(Netw.CurrPlayer());
-        if (otherPlayer == null) { return; }
-        var grids = HexGrid.instance.GetNeighboursFor(otherPlayer.CurrentHexTile.HexCoordinates);
-        grids.Shuffle();
-        var gridSelected = grids[0].GetHex();
-
-        NetworkActionEvents.instance.PlayerAbility(GameHandler.instance.CurrentPlayer, gridSelected, AbilityType.Radar);
+        NetworkActionEvents.instance.PlayerAbility(GameHandler.instance.CurrentPlayer(), hex, AbilityType.Radar);
     } 
 
     public void DeselectAbility()

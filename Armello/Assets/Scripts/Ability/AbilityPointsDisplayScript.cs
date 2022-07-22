@@ -63,9 +63,9 @@ public class AbilityPointsDisplayScript : MonoBehaviour
     {
         // zodat de waardes verwerkt kunnen worden
         yield return new WaitForSeconds(0.1f);
-        var playerAction = player.GetComponent<PlayerAbilityPoints>();
-        actionPointsText.text = playerAction.CurrentPlayerActionPoints + "/" + playerAction.ActionPointsLimit;
-        targetBarFilledAmount = playerAction.CurrentPlayerActionPoints / (float)playerAction.ActionPointsLimit;
+        var playerAction = player.GetComponent<PlayerActionPoints>();
+        actionPointsText.text = player.CurrentActionPoints() + "/" + playerAction.ActionPointsLimit;
+        targetBarFilledAmount = player.CurrentActionPoints() / (float)playerAction.ActionPointsLimit;
     }
 
     private float targetBarFilledAmount;

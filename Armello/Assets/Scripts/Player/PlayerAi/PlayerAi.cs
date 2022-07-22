@@ -27,20 +27,20 @@ public class PlayerAi : MonoBehaviour
         ActionEvents.NewRoundStarted -= NewRoundStarted;
     }
 
-    private void NewRoundStarted(List<PlayerScript> players, PlayerScript player)
+    private void NewRoundStarted(List<PlayerScript> players, PlayerScript currPlayer)
     {
-        StartCoroutine(OnNewTurn(player));
+        StartCoroutine(OnNewTurn(currPlayer));
     }
 
-    private void OnNewPlayerTurn(PlayerScript player)
+    private void OnNewPlayerTurn(PlayerScript currPlayer)
     {
-        StartCoroutine(OnNewTurn(player));
+        StartCoroutine(OnNewTurn(currPlayer));
     }
 
-    private IEnumerator OnNewTurn(PlayerScript player)
+    private IEnumerator OnNewTurn(PlayerScript currPlayer)
     {
-        yield return new WaitForSeconds(0.1f); // wacht op wijzigingen verwerken;
-        if(player.IsMyTurn())
+        yield return new WaitForSeconds(2f); // wacht op wijzigingen verwerken + wachttijd
+        if (player.IsMyTurn() && player == currPlayer)
         {
             this.playerAiMove.DoTurn();
         }

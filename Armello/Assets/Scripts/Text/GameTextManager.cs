@@ -73,7 +73,7 @@ public class GameTextManager : MonoBehaviour
         }
         else if (type == AbilityType.Vision)
         {
-            Textt.GameSync(GameHandler.instance.CurrentPlayer.PlayerName + " is watching tile...");
+            Textt.GameSync(GameHandler.instance.CurrentPlayer().PlayerName + " is watching tile...");
         }
 
         // iets? nodig?

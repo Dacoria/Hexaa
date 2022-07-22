@@ -70,7 +70,7 @@ public class ButtonEvents : MonoBehaviour
         UpdateAllAbilities(setToUnselected: true);
     }
 
-    private void UpdateAllAbilities(bool setToUnselected, bool? interactable = null, int? turnCountPlayer = null)
+    private void UpdateAllAbilities(bool setToUnselected, bool checkAvailableInTurn = true, bool? interactable = null)
     {
         foreach (AbilityType abilityType in Enum.GetValues(typeof(AbilityType)))
         {
@@ -84,9 +84,9 @@ public class ButtonEvents : MonoBehaviour
             {
                 buttonUpdater.SetAbilityInteractable(abilityType, interactable.Value);
             }
-            if(turnCountPlayer.HasValue)
+            if(checkAvailableInTurn)
             {
-                buttonUpdater.SetAbilityInteractable(abilityType, turnCountPlayer.Value >= abilityType.AvailableFromTurn());
+                buttonUpdater.SetAbilityInteractable(abilityType, abilityType.IsAvailableThisTurn());
             }
         }
     }
@@ -108,8 +108,7 @@ public class ButtonEvents : MonoBehaviour
         if (GameHandler.instance.GameStatus == GameStatus.ActiveRound) 
         {
             UpdateEndTurnButton(visible: true, interactable: currentPlayer.IsOnMyNetwork());
-            var turnCountPlayer = currentPlayer.GetComponent<PlayerTurnCount>().TurnCount;
-            UpdateAllAbilities(interactable: currentPlayer.IsOnMyNetwork(), setToUnselected: true, turnCountPlayer: turnCountPlayer);
+            UpdateAllAbilities(interactable: currentPlayer.IsOnMyNetwork(), setToUnselected: true);
         }
     }
 

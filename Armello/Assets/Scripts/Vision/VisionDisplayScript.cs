@@ -26,7 +26,7 @@ public class VisionDisplayScript : MonoBehaviour, IAbilityAction
 
     private void OnTileSelectionConfirmed(Hex hex)
     {
-        NetworkActionEvents.instance.PlayerAbility(GameHandler.instance.CurrentPlayer, hex, AbilityType.Vision);
+        NetworkActionEvents.instance.PlayerAbility(GameHandler.instance.CurrentPlayer(), hex, AbilityType.Vision);
     }
 
     public void DeselectAbility()

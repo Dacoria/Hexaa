@@ -23,7 +23,7 @@ public class MovementDisplayScript : MonoBehaviour, IAbilityAction
 
     public void InitAbilityAction()
     {
-        HexTileSelectionManager.instance.HighlightMovementOptionsAroundPlayer(GameHandler.instance.CurrentPlayer);
+        HexTileSelectionManager.instance.HighlightMovementOptionsAroundPlayer(GameHandler.instance.CurrentPlayer());
         Textt.GameLocal("Select the tile to move to");
         movementAbilIsActive = true;
     }

@@ -17,9 +17,9 @@ public class EndTurnButtonScript : MonoBehaviour
 
     public void OnEndTurnButtonClick()
     {
-        if (GameHandler.instance.CurrentPlayer.IsOnMyNetwork())
+        if (GameHandler.instance.CurrentPlayer().IsOnMyNetwork())
         {
-            GameHandler.instance.PlayerEndsTurn(GameHandler.instance.CurrentPlayer);
+            GameHandler.instance.PlayerEndsTurn(GameHandler.instance.CurrentPlayer());
         }
     }
 }

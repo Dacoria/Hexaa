@@ -5,7 +5,8 @@ using UnityEngine;
 
 public partial class GameHandler : MonoBehaviour
 {
-    public PlayerScript CurrentPlayer;
+    public PlayerScript currentPlayer;
+    public PlayerScript CurrentPlayer() => currentPlayer;
 
     public void PlayerEndsTurn(PlayerScript myPlayer)
     {
@@ -14,8 +15,8 @@ public partial class GameHandler : MonoBehaviour
 
     private void NextTurn()
     {
-        CurrentPlayer = NextPlayer();
-        NetworkActionEvents.instance.NewPlayerTurn(CurrentPlayer);
+        currentPlayer = NextPlayer();
+        NetworkActionEvents.instance.NewPlayerTurn(CurrentPlayer());
     }
 
     private PlayerScript NextPlayer()
@@ -30,7 +31,7 @@ public partial class GameHandler : MonoBehaviour
                 return player;
             }
 
-            if (player.PlayerId == CurrentPlayer.PlayerId)
+            if (player.PlayerId == currentPlayer.PlayerId)
             {
                 foundCurrPlayer = true;
             }

@@ -11,7 +11,11 @@ public class PlayerScript : MonoBehaviour, IPunInstantiateMagicCallback
     public bool IsAi;
     public int PlayerId;
     public string PlayerName;
+    public int TurnCount() => playerTurnCount.GetTurnCount();
+    public int CurrentActionPoints() => playerActionPoints.GetCurrentPlayerActionPoints();
 
+    [ComponentInject] private PlayerTurnCount playerTurnCount;
+    [ComponentInject] private PlayerActionPoints playerActionPoints;
     [ComponentInject] private PhotonView photonView;
 
     private void Awake()

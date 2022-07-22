@@ -4,14 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAbilityPoints : MonoBehaviour
+public class PlayerActionPoints : MonoBehaviour
 {
     [ComponentInject] private PlayerScript playerScript;
     public int PlayerActionsPerTurn = 5;
     public int ActionPointsLimit = 10;
 
-    public int CurrentPlayerActionPoints;
-
+    private int currentPlayerActionPoints;
+    public int GetCurrentPlayerActionPoints() => currentPlayerActionPoints;
 
     private void Awake()
     {
@@ -29,7 +29,7 @@ public class PlayerAbilityPoints : MonoBehaviour
     {
         if(player == playerScript)
         {
-            CurrentPlayerActionPoints -= type.Cost();
+            currentPlayerActionPoints -= type.Cost();
         }        
     }
 
@@ -37,16 +37,16 @@ public class PlayerAbilityPoints : MonoBehaviour
     {
         if (player == playerScript)
         {
-            CurrentPlayerActionPoints = Mathf.Min(CurrentPlayerActionPoints + PlayerActionsPerTurn, ActionPointsLimit);
+            currentPlayerActionPoints = Mathf.Min(currentPlayerActionPoints + PlayerActionsPerTurn, ActionPointsLimit);
         }
     }
 
     private void OnNewRoundStarted(List<PlayerScript> allPlayers, PlayerScript currentPlayer)
     {
-        CurrentPlayerActionPoints = 0;
+        currentPlayerActionPoints = 0;
         if (currentPlayer == playerScript)
         {
-            CurrentPlayerActionPoints = Mathf.Min(CurrentPlayerActionPoints + PlayerActionsPerTurn, ActionPointsLimit);
+            currentPlayerActionPoints = Mathf.Min(currentPlayerActionPoints + PlayerActionsPerTurn, ActionPointsLimit);
         }
     }
 

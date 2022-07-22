@@ -20,8 +20,8 @@ public partial class GameHandler : MonoBehaviour
     private void SetupNewGame()
     {
         var players = NetworkHelper.instance.GetPlayers().OrderBy(x => x.PlayerId).Take(StartPosTiles.Count).ToList();
-        CurrentPlayer = players[0];
-        NetworkActionEvents.instance.NewRoundStarted(players, CurrentPlayer);
+        currentPlayer = players[0];
+        NetworkActionEvents.instance.NewRoundStarted(players, CurrentPlayer());
     }
 
     public void ResetGame()
@@ -48,7 +48,7 @@ public partial class GameHandler : MonoBehaviour
         ResetGame();
     }
 
-    private void OnNewRoundStarted(List<PlayerScript> players, PlayerScript currentPlayer)
+    private void OnNewRoundStarted(List<PlayerScript> players, PlayerScript currPlayer)
     {
         GameStatus = GameStatus.ActiveRound;
 
@@ -71,7 +71,7 @@ public partial class GameHandler : MonoBehaviour
         // reset local
         ResetGameLocal();
 
-        CurrentPlayer = currentPlayer;        
+        currentPlayer = currPlayer;        
     }
 
     private void ResetGameLocal()

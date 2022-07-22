@@ -5,8 +5,8 @@ using UnityEngine;
 
 public partial class GameHandler : MonoBehaviour
 {
-    private void EndGameOnRocketHit()
-    {
+    private void CheckEndGameOnRocketHit()
+    {        
         NetworkActionEvents.instance.RoundEnded(false);
         StartCoroutine(ResetInXSeconds(5));
     }

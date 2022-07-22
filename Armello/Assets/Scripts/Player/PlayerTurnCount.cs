@@ -9,7 +9,8 @@ public class PlayerTurnCount : MonoBehaviour
 {   
     [ComponentInject] private PlayerScript playerScript;
 
-    public int TurnCount;
+    private int turnCount;
+    public int GetTurnCount() => turnCount;
 
     private void Awake()
     {
@@ -30,10 +31,10 @@ public class PlayerTurnCount : MonoBehaviour
 
     private void OnNewRoundStarted(List<PlayerScript> allPlayers, PlayerScript currentPlayer)
     {
-        TurnCount = 0;
+        turnCount = 0;
         if(playerScript == currentPlayer)
         {
-            TurnCount++;
+            turnCount++;
         }
     }
 
@@ -41,7 +42,7 @@ public class PlayerTurnCount : MonoBehaviour
     {
         if (playerScript == currentPlayer)
         {
-            TurnCount++;
+            turnCount++;
         }
     }
 }

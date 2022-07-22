@@ -27,7 +27,7 @@ public partial class GameHandler : MonoBehaviour
 
     private void OnNewPlayerTurn(PlayerScript player)
     {
-        CurrentPlayer = player;
+        currentPlayer = player;
     }
 
     private void OnDestroy()
@@ -42,7 +42,7 @@ public partial class GameHandler : MonoBehaviour
     {
         if (playerKilled)
         {
-            EndGameOnRocketHit();
+            CheckEndGameOnRocketHit();
         }        
     }    
 }
