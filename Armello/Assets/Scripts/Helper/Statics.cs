@@ -14,9 +14,10 @@
     public static string ANIMATION_BOOL_WALK = "WALK";
     public static string ANIMATION_BOOL_HOP = "HOP";
     public static string ANIMATION_BOOL_DANCE = "DANCE";
-    public static string ANIMATION_TRIGGER_PICKUP = "DANCE";
-    public static string ANIMATION_TRIGGER_ATTACK = "DANCE";
-    public static string ANIMATION_TRIGGER_DANCE = "DIE";
+    public static string ANIMATION_TRIGGER_PICKUP = "PICKUP";
+    public static string ANIMATION_TRIGGER_ATTACK = "ATTACK";
+    public static string ANIMATION_TRIGGER_WAVE = "WAVE";
+    public static string ANIMATION_TRIGGER_SPINNING = "SPINNING";
 
     public static string RESOURCE_PATH_BULLET = "Local/Bullet";
 }

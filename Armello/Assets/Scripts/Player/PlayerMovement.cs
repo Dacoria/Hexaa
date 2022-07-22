@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float previousAngleDiff;
 
-    public IEnumerator RotateTowardsDestination(Vector3 endPosition, Action callbackOnFinished)
+    public IEnumerator RotateTowardsDestination(Vector3 endPosition, Action callbackOnFinished = null)
     {
         float elapsedTime = 0f;
         var targetDirection = endPosition - transform.position;
