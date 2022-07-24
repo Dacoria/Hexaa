@@ -18,7 +18,10 @@ public class SpriteAbilityHeightCorrection : MonoBehaviour
     {
         this.ComponentInject();
         this.ImageButton = Button.GetComponent<Image>();
+    }
 
+    private void Start()
+    {
         this.origPosAbilImage = ImageAbility.transform.position;
     }
 
@@ -26,7 +29,7 @@ public class SpriteAbilityHeightCorrection : MonoBehaviour
     {
         if (ImageButton.sprite.name.Contains("pressed"))
         {
-            ImageAbility.transform.position = origPosAbilImage + new Vector3(0, -15, 0);
+            ImageAbility.transform.position = origPosAbilImage + new Vector3(0, -20, 0);
         }
         else
         {

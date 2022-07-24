@@ -53,5 +53,7 @@ public enum HighlightColorType
     Purple,
     Blue,
     Yellow,
-    Pink
+    Pink,
+    Red,
+    Green
 }
