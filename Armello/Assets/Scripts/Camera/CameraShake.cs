@@ -3,62 +3,29 @@ using System.Collections;
 
 public class CameraShake : MonoBehaviour
 {
-	// Transform of the camera to shake. Grabs the gameObject's transform
-	// if null.
-	public Transform camTransform;
+    private Camera mainCamera;
+    public static CameraShake instance;
 
-	// How long the object should shake for.
-	public float shakeDuration = 0f;
+    private void Awake()
+    {
+        instance = this;
+        mainCamera = Camera.main;
+    }
 
-	// Amplitude of the shake. A larger value shakes the camera harder.
-	public float shakeAmount = 0.7f;
-	public float decreaseFactor = 1.0f;
-
-	public bool shaketrue = false;
-
-	Vector3 originalPos;
-	float originalShakeDuration; //<--add this
-
-	public static CameraShake instance;
-
-	void Awake()
-	{
-		instance = this;
-		if (camTransform == null)
-		{
-			camTransform = GetComponent(typeof(Transform)) as Transform;
-		}
-	}
-
-	void OnEnable()
-	{
-		originalPos = camTransform.localPosition;
-		originalShakeDuration = shakeDuration; //<--add this
-	}
-
-	void Update()
-	{
-		if (shaketrue)
-		{
-			if (shakeDuration > 0)
-			{
-				camTransform.localPosition = Vector3.Lerp(camTransform.localPosition, originalPos + Random.insideUnitSphere * shakeAmount, Time.deltaTime * 3);
-
-				shakeDuration -= Time.deltaTime * decreaseFactor;
-			}
-			else
-			{
-				shakeDuration = originalShakeDuration; //<--add this
-				camTransform.localPosition = originalPos;
-				shaketrue = false;
-			}
-		}
-	}
-
-	public void Shake(float shakeDuration, float shakeAmount)
-	{
-		this.shaketrue = true;
-		this.shakeDuration = shakeDuration;
-		this.shakeAmount = shakeAmount;
-	}
+    IEnumerator ShakeCamera(float shakeDuration, float shakeAmount, float shakeDecreaseFactor)
+    {
+        var originalPos = mainCamera.transform.localPosition;
+        var duration = shakeDuration;
+        while (duration > 0)
+        {
+            mainCamera.transform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
+            duration -= Time.deltaTime * shakeDecreaseFactor;
+            yield return null;
+        }
+        mainCamera.transform.localPosition = originalPos;
+    }
+    public void Shake(float shakeDuration = 0.4f, float shakeAmount = 1.5f, float shakeDecreaseFactor = 2f)
+    {
+        StartCoroutine(ShakeCamera(shakeDuration, shakeAmount, shakeDecreaseFactor));
+    }
 }

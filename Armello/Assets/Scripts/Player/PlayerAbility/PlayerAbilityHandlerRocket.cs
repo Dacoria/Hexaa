@@ -34,7 +34,7 @@ public partial class PlayerAbilityHandler : MonoBehaviour
             }
 
             GameHandler.instance.PlayerRocketHitTile(playerThatSendRocket, hexHit, playerHit, hitPlayer);
-            CameraShake.instance.Shake(0.35f, 4f);
+            CameraShake.instance.Shake();
         }
     }
 }
